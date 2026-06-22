@@ -10,7 +10,7 @@ import {
 } from '@ant-design/icons';
 
 export default function LoginPage() {
-  const [activeTab, setActiveTab] = useState<'candidate' | 'hr'>('candidate');
+  const [activeTab, setActiveTab] = useState<'candidate' | 'hr' | 'admin'>('candidate');
   const [phone, setPhone] = useState('');
   const [code, setCode] = useState('');
   const [showPwd, setShowPwd] = useState(false);
@@ -125,6 +125,10 @@ export default function LoginPage() {
                   onClick={() => setActiveTab('hr')}
                   className={`flex-1 pb-3 text-sm font-medium transition-all duration-200 border-b-2 ${activeTab === 'hr' ? 'text-[#1677FF] border-[#1677FF]' : 'text-slate-400 border-transparent hover:text-slate-600'}`}
                 >企业登录</button>
+                <button
+                  onClick={() => setActiveTab('admin')}
+                  className={`flex-1 pb-3 text-xs font-medium transition-all duration-200 border-b-2 ${activeTab === 'admin' ? 'text-slate-700 border-slate-700' : 'text-slate-300 border-transparent hover:text-slate-500'}`}
+                >管理</button>
               </div>
 
               {/* Form */}

@@ -49,7 +49,7 @@ func (h *Handler) SendCode(c *gin.Context) {
 type loginReq struct {
 	Phone string `json:"phone" binding:"required,len=11"`
 	Code  string `json:"code" binding:"required,len=6"`
-	Role  string `json:"role" binding:"required,oneof=candidate hr"`
+	Role  string `json:"role" binding:"required,oneof=candidate hr admin"`
 }
 
 func (h *Handler) Login(c *gin.Context) {

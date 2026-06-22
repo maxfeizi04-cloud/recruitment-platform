@@ -3,7 +3,7 @@ import client from './client';
 export interface User {
   id: string;
   phone: string;
-  role: 'candidate' | 'hr';
+  role: 'candidate' | 'hr' | 'admin';
   name: string;
   avatar_url: string;
 }

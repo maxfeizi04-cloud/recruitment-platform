@@ -20,6 +20,9 @@ import JobManagePage from './pages/hr/JobManagePage';
 import JobEditPage from './pages/hr/JobEditPage';
 import CandidateListPage from './pages/hr/CandidateListPage';
 
+// Admin pages
+import AdminDashboardPage from './pages/admin/DashboardPage';
+
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const auth = useAuth();
   if (!auth.isAuthenticated) return <Navigate to="/login" replace />;
@@ -28,6 +31,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
 function HomePage() {
   const auth = useAuth();
+  if (auth.user?.role === 'admin') return <AdminDashboardPage />;
   if (auth.isHR) return <HRDashboardPage />;
   return <CandidateHomePage />;
 }
