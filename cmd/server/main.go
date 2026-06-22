@@ -9,6 +9,7 @@ import (
 	"syscall"
 	"time"
 
+	"recruitment-platform/internal/application"
 	"recruitment-platform/internal/auth"
 	"recruitment-platform/internal/config"
 	"recruitment-platform/internal/job"
@@ -101,6 +102,11 @@ func main() {
 	jobSvc := job.NewService(jobRepo)
 	jobHandler := job.NewHandler(jobSvc)
 
+	// ── 初始化 Application 模块 ──
+	appRepo := application.NewRepository(dbPool)
+	appSvc := application.NewService(appRepo)
+	appHandler := application.NewHandler(appSvc)
+
 	router := gin.New()
 
 	router.Use(middleware.Logger())
@@ -125,6 +131,7 @@ func main() {
 		userHandler.RegisterRoutes(protected)
 		resumeHandler.RegisterRoutes(protected)
 		jobHandler.RegisterRoutes(api, protected)
+		appHandler.RegisterRoutes(api, protected)
 	}
 
 	srv := &http.Server{
