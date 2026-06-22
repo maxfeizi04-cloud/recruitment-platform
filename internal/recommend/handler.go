@@ -23,6 +23,14 @@ func (h *Handler) RegisterRoutes(protected *gin.RouterGroup) {
 	}
 }
 
+// @Summary      推荐职位
+// @Tags         推荐
+// @Accept       json
+// @Produce      json
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} map[string]string
+// @Security     BearerAuth
+// @Router       /recommend/jobs [get]
 func (h *Handler) RecommendJobs(c *gin.Context) {
 	userID, _ := c.Get("user_id")
 	uid, err := uuid.Parse(userID.(string))
@@ -39,6 +47,15 @@ func (h *Handler) RecommendJobs(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"recommendations": jobs})
 }
 
+// @Summary      推荐候选人
+// @Tags         推荐
+// @Accept       json
+// @Produce      json
+// @Param        job_id query string true "职位ID"
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} map[string]string
+// @Security     BearerAuth
+// @Router       /recommend/candidates [get]
 func (h *Handler) RecommendCandidates(c *gin.Context) {
 	jobID := c.Query("job_id")
 	if jobID == "" {

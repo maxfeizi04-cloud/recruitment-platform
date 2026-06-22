@@ -29,6 +29,15 @@ type applyReq struct {
 	ResumeID string `json:"resume_id" binding:"required"`
 }
 
+// @Summary      投递职位
+// @Tags         投递
+// @Accept       json
+// @Produce      json
+// @Param        body body applyReq true "职位ID和简历ID"
+// @Success      200 {object} Application
+// @Failure      400 {object} map[string]string
+// @Security     BearerAuth
+// @Router       /applications [post]
 func (h *Handler) Apply(c *gin.Context) {
 	userID, _ := c.Get("user_id")
 	var req applyReq
@@ -44,6 +53,14 @@ func (h *Handler) Apply(c *gin.Context) {
 	c.JSON(http.StatusCreated, app)
 }
 
+// @Summary      获取我的投递记录
+// @Tags         投递
+// @Accept       json
+// @Produce      json
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} map[string]string
+// @Security     BearerAuth
+// @Router       /applications/my [get]
 func (h *Handler) ListByCandidate(c *gin.Context) {
 	userID, _ := c.Get("user_id")
 	apps, err := h.svc.ListByCandidate(c.Request.Context(), userID.(string))
@@ -54,6 +71,14 @@ func (h *Handler) ListByCandidate(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"applications": apps})
 }
 
+// @Summary      获取收到的投递
+// @Tags         投递
+// @Accept       json
+// @Produce      json
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} map[string]string
+// @Security     BearerAuth
+// @Router       /applications/received [get]
 func (h *Handler) ListByHR(c *gin.Context) {
 	userID, _ := c.Get("user_id")
 	apps, err := h.svc.ListByHR(c.Request.Context(), userID.(string))
@@ -68,6 +93,16 @@ type updateStatusReq struct {
 	Status string `json:"status" binding:"required"`
 }
 
+// @Summary      更新投递状态
+// @Tags         投递
+// @Accept       json
+// @Produce      json
+// @Param        id path string true "投递ID"
+// @Param        body body updateStatusReq true "状态值（viewed/accepted/rejected）"
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} map[string]string
+// @Security     BearerAuth
+// @Router       /applications/{id}/status [patch]
 func (h *Handler) UpdateStatus(c *gin.Context) {
 	userID, _ := c.Get("user_id")
 	var req updateStatusReq

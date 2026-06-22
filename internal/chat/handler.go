@@ -26,6 +26,14 @@ func (h *Handler) RegisterRoutes(r *gin.RouterGroup) {
 	r.GET("/chat/user-sig", h.GetUserSig)
 }
 
+// @Summary      获取IM UserSig
+// @Tags         即时通讯
+// @Accept       json
+// @Produce      json
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} map[string]string
+// @Security     BearerAuth
+// @Router       /chat/user-sig [get]
 func (h *Handler) GetUserSig(c *gin.Context) {
 	userID, _ := c.Get("user_id")
 	if h.imAppID == "" || h.imSecret == "" {

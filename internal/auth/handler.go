@@ -26,6 +26,14 @@ type sendCodeReq struct {
 	Phone string `json:"phone" binding:"required,len=11"`
 }
 
+// @Summary      发送手机验证码
+// @Tags         认证
+// @Accept       json
+// @Produce      json
+// @Param        body body sendCodeReq true "手机号"
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} map[string]string
+// @Router       /auth/send-code [post]
 func (h *Handler) SendCode(c *gin.Context) {
 	var req sendCodeReq
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -52,6 +60,14 @@ type loginReq struct {
 	Role  string `json:"role" binding:"required,oneof=candidate hr admin"`
 }
 
+// @Summary      手机验证码登录
+// @Tags         认证
+// @Accept       json
+// @Produce      json
+// @Param        body body loginReq true "手机号、验证码和角色"
+// @Success      200 {object} LoginResult
+// @Failure      400 {object} map[string]string
+// @Router       /auth/login [post]
 func (h *Handler) Login(c *gin.Context) {
 	var req loginReq
 	if err := c.ShouldBindJSON(&req); err != nil {

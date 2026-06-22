@@ -28,6 +28,14 @@ func (h *Handler) RegisterRoutes(r *gin.RouterGroup) {
 	}
 }
 
+// @Summary      获取我的简历列表
+// @Tags         简历
+// @Accept       json
+// @Produce      json
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} map[string]string
+// @Security     BearerAuth
+// @Router       /resumes [get]
 func (h *Handler) List(c *gin.Context) {
 	userID, _ := c.Get("user_id")
 	resumes, err := h.svc.List(c.Request.Context(), userID.(string))
@@ -43,6 +51,15 @@ type resumeReq struct {
 	Content string `json:"content"`
 }
 
+// @Summary      创建简历
+// @Tags         简历
+// @Accept       json
+// @Produce      json
+// @Param        body body resumeReq true "简历标题和内容"
+// @Success      200 {object} Resume
+// @Failure      400 {object} map[string]string
+// @Security     BearerAuth
+// @Router       /resumes [post]
 func (h *Handler) Create(c *gin.Context) {
 	userID, _ := c.Get("user_id")
 	var req resumeReq
@@ -58,6 +75,16 @@ func (h *Handler) Create(c *gin.Context) {
 	c.JSON(http.StatusCreated, resume)
 }
 
+// @Summary      更新简历
+// @Tags         简历
+// @Accept       json
+// @Produce      json
+// @Param        id path string true "简历ID"
+// @Param        body body resumeReq true "简历标题和内容"
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} map[string]string
+// @Security     BearerAuth
+// @Router       /resumes/{id} [put]
 func (h *Handler) Update(c *gin.Context) {
 	userID, _ := c.Get("user_id")
 	id := c.Param("id")
@@ -73,6 +100,15 @@ func (h *Handler) Update(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "简历已更新"})
 }
 
+// @Summary      删除简历
+// @Tags         简历
+// @Accept       json
+// @Produce      json
+// @Param        id path string true "简历ID"
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} map[string]string
+// @Security     BearerAuth
+// @Router       /resumes/{id} [delete]
 func (h *Handler) Delete(c *gin.Context) {
 	userID, _ := c.Get("user_id")
 	id := c.Param("id")
@@ -83,6 +119,15 @@ func (h *Handler) Delete(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "简历已删除"})
 }
 
+// @Summary      设为默认简历
+// @Tags         简历
+// @Accept       json
+// @Produce      json
+// @Param        id path string true "简历ID"
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} map[string]string
+// @Security     BearerAuth
+// @Router       /resumes/{id}/set-default [post]
 func (h *Handler) SetDefault(c *gin.Context) {
 	userID, _ := c.Get("user_id")
 	id := c.Param("id")
@@ -93,6 +138,16 @@ func (h *Handler) SetDefault(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "已设为默认简历"})
 }
 
+// @Summary      上传简历附件
+// @Tags         简历
+// @Accept       multipart/form-data
+// @Produce      json
+// @Param        id path string true "简历ID"
+// @Param        file formData file true "附件文件（PDF/DOC/DOCX/JPG/PNG，最大20MB）"
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} map[string]string
+// @Security     BearerAuth
+// @Router       /resumes/{id}/upload-attachment [post]
 func (h *Handler) UploadAttachment(c *gin.Context) {
 	userID, _ := c.Get("user_id")
 	id := c.Param("id")

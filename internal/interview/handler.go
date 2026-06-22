@@ -38,6 +38,15 @@ type interviewReq struct {
 	Notes         string `json:"notes"`
 }
 
+// @Summary      发起面试邀约
+// @Tags         面试
+// @Accept       json
+// @Produce      json
+// @Param        body body interviewReq true "面试信息"
+// @Success      200 {object} Invitation
+// @Failure      400 {object} map[string]string
+// @Security     BearerAuth
+// @Router       /interviews [post]
 func (h *Handler) Create(c *gin.Context) {
 	userID, _ := c.Get("user_id")
 	role, _ := c.Get("role")
@@ -58,6 +67,14 @@ func (h *Handler) Create(c *gin.Context) {
 	c.JSON(http.StatusCreated, inv)
 }
 
+// @Summary      获取我的面试邀约
+// @Tags         面试
+// @Accept       json
+// @Produce      json
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} map[string]string
+// @Security     BearerAuth
+// @Router       /interviews/my [get]
 func (h *Handler) ListByUser(c *gin.Context) {
 	userID, _ := c.Get("user_id")
 	invs, err := h.svc.ListByUser(c.Request.Context(), userID.(string))
@@ -72,6 +89,16 @@ type updateInvStatusReq struct {
 	Status string `json:"status" binding:"required"`
 }
 
+// @Summary      更新面试状态
+// @Tags         面试
+// @Accept       json
+// @Produce      json
+// @Param        id path string true "面试ID"
+// @Param        body body updateInvStatusReq true "状态值（accepted/declined/reschedule/confirmed）"
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} map[string]string
+// @Security     BearerAuth
+// @Router       /interviews/{id}/status [patch]
 func (h *Handler) UpdateStatus(c *gin.Context) {
 	userID, _ := c.Get("user_id")
 	var req updateInvStatusReq
@@ -86,6 +113,15 @@ func (h *Handler) UpdateStatus(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "状态已更新"})
 }
 
+// @Summary      获取面试导航链接
+// @Tags         面试
+// @Accept       json
+// @Produce      json
+// @Param        id path string true "面试ID"
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} map[string]string
+// @Security     BearerAuth
+// @Router       /interviews/{id}/navigate [get]
 func (h *Handler) Navigate(c *gin.Context) {
 	inv, err := h.svc.GetByID(c.Request.Context(), c.Param("id"))
 	if err != nil {
@@ -102,6 +138,14 @@ func (h *Handler) Navigate(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"navigation_url": navURL})
 }
 
+// @Summary      地点搜索
+// @Tags         地图
+// @Accept       json
+// @Produce      json
+// @Param        q query string true "搜索关键词"
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} map[string]string
+// @Router       /maps/place-search [get]
 func (h *Handler) PlaceSearch(c *gin.Context) {
 	q := c.Query("q")
 	if q == "" {
