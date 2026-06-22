@@ -6,8 +6,8 @@ import { useAuth } from '../../stores/auth';
 import {
   PhoneOutlined, LockOutlined, EyeOutlined, EyeInvisibleOutlined,
   WechatOutlined, AlipayCircleOutlined, MessageOutlined,
-  AuditOutlined, GlobalOutlined, RocketOutlined, SafetyCertificateOutlined,
-  ThunderboltOutlined, CaretDownOutlined,
+  AuditOutlined, RocketOutlined, SafetyCertificateOutlined,
+  CaretDownOutlined,
 } from '@ant-design/icons';
 
 // ── Static Constants ──
@@ -24,13 +24,6 @@ const features = [
   { icon: <AuditOutlined />, title: '严格审核', desc: '企业职位人工审核' },
   { icon: <SafetyCertificateOutlined />, title: '信息安全', desc: '多重保护隐私安全' },
   { icon: <RocketOutlined />, title: '高效匹配', desc: '精准推荐合适职位' },
-];
-
-const ribbonItems = [
-  { icon: <GlobalOutlined />, title: '海量优质企业', desc: '5000+ 认证企业在线招聘' },
-  { icon: <AuditOutlined />, title: '真实职位信息', desc: 'AI 审核 + 人工复核保障' },
-  { icon: <ThunderboltOutlined />, title: '精准职位推荐', desc: '智能算法匹配最适合的你' },
-  { icon: <SafetyCertificateOutlined />, title: '全程安心服务', desc: '从投递到入职全程保障' },
 ];
 
 const footerLinks = ['关于我们', '帮助中心', '用户协议', '隐私政策', '联系我们'];
@@ -70,11 +63,11 @@ export default function LoginPage() {
   if (auth.isAuthenticated) { navigate('/'); return null; }
 
   return (
-    <div className="min-h-screen bg-white font-sans overflow-x-hidden">
+    <div className="h-screen bg-white font-sans overflow-hidden flex flex-col">
       {/* ===== Header ===== */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100">
+      <header className="z-50 bg-white border-b border-gray-100 flex-shrink-0">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <a href="/" className="flex items-center gap-3 flex-shrink-0">
               <div className="w-11 h-11 rounded-xl bg-[#1677FF] flex items-center justify-center">
@@ -105,7 +98,7 @@ export default function LoginPage() {
       </header>
 
       {/* ===== Hero Main Content ===== */}
-      <main className="max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-32 min-h-[calc(100vh-80px)] flex items-center">
+      <main className="max-w-7xl mx-auto px-6 lg:px-8 py-6 lg:py-10 flex-1 flex items-center w-full">
         <div className="grid grid-cols-12 gap-8 items-center">
           {/* Left: Brand (col-span-3) */}
           <div className="col-span-12 lg:col-span-3">
@@ -285,50 +278,15 @@ export default function LoginPage() {
         </div>
       </main>
 
-      {/* ===== Ribbon Bar ===== */}
-      <section className="bg-gray-50/60 border-y border-gray-100">
-        <div className="mx-auto px-6 lg:px-8 py-16">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {ribbonItems.map((item) => (
-              <div key={item.title} className="flex items-start gap-4">
-                <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
-                  <span className="text-2xl text-[#1677FF]">{item.icon}</span>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-[#1f1f1f] text-sm">{item.title}</h3>
-                  <p className="mt-1 text-xs text-[#8c8c8c]">{item.desc}</p>
-                </div>
-              </div>
+      {/* ===== Compact Footer ===== */}
+      <footer className="bg-white border-t border-gray-100 flex-shrink-0">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 h-10 flex items-center justify-between">
+          <span className="text-xs text-[#8c8c8c]">© 2026 放心 All Rights Reserved. 湘ICP备2023001234号-1</span>
+          <nav className="flex gap-5">
+            {footerLinks.map((item) => (
+              <a key={item} href="#" className="text-xs text-[#8c8c8c] hover:text-[#1677FF] transition-colors">{item}</a>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== Footer ===== */}
-      <footer className="bg-white">
-        <div className="mx-auto px-6 lg:px-8 py-14">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            {/* Logo */}
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-lg bg-[#1677FF] flex items-center justify-center">
-                <span className="text-white font-bold text-sm">放</span>
-              </div>
-              <div className="leading-tight">
-                <span className="text-sm font-semibold text-[#1f1f1f]">放心</span>
-                <p className="text-[10px] text-[#8c8c8c] leading-none mt-0.5">让求职招聘更放心</p>
-              </div>
-            </div>
-
-            {/* Links */}
-            <nav className="flex flex-wrap justify-center gap-6">
-              {footerLinks.map((item) => (
-                <a key={item} href="#" className="text-sm text-[#8c8c8c] hover:text-[#1677FF] transition-colors">{item}</a>
-              ))}
-            </nav>
-
-            {/* Copyright */}
-            <p className="text-sm text-[#8c8c8c] text-center">© 2026 放心 All Rights Reserved. 湘ICP备2023001234号-1</p>
-          </div>
+          </nav>
         </div>
       </footer>
     </div>
