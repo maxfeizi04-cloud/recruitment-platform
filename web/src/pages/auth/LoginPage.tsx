@@ -100,8 +100,8 @@ export default function LoginPage() {
       {/* ===== Hero Main Content ===== */}
       <main className="max-w-7xl mx-auto px-6 lg:px-8 py-6 lg:py-10 flex-1 flex items-center w-full">
         <div className="grid grid-cols-12 gap-12 lg:gap-16 items-center">
-          {/* Left: Brand (col-span-3) */}
-          <div className="col-span-12 lg:col-span-3">
+          {/* Left: Brand (col-span-4) */}
+          <div className="col-span-12 lg:col-span-4">
             <h1 className="text-5xl lg:text-6xl font-extrabold text-[#1f1f1f] leading-tight tracking-tight">
               放心找工作
             </h1>
@@ -125,8 +125,8 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Center: 3D Illustration Area (col-span-5) */}
-          <div className="hidden lg:block col-span-5">
+          {/* Center: 3D Illustration Area (col-span-4) */}
+          <div className="hidden lg:block col-span-4">
             <div className="relative h-[520px] rounded-3xl bg-[radial-gradient(circle_at_40%_40%,#e6f4ff_0%,#f4f7fc_70%)] overflow-hidden">
               {/* City Skyline SVG Silhouette */}
               <div className="absolute bottom-0 left-0 right-0 opacity-20">
