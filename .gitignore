@@ -35,3 +35,8 @@ vendor/
 # Temp
 tmp/
 temp/
+
+# Node
+web/node_modules/
+web/dist/
+*.tsbuildinfo
