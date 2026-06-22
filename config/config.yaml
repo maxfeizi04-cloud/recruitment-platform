@@ -1,0 +1,33 @@
+server:
+  port: 8080
+  mode: debug
+
+database:
+  host: localhost
+  port: 5432
+  user: postgres
+  password: postgres
+  name: recruitment
+  sslmode: disable
+
+redis:
+  addr: localhost:6379
+  password: ""
+  db: 0
+
+jwt:
+  secret: change-me
+  expire_hours: 168
+
+sms:
+  secret_id: ""
+  secret_key: ""
+  sdk_app_id: ""
+  template_id: ""
+  sign_name: ""
+
+cos:
+  secret_id: ""
+  secret_key: ""
+  bucket_url: ""
+  region: ap-guangzhou
