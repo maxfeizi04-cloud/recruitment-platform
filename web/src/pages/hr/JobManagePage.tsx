@@ -30,7 +30,7 @@ export default function JobManagePage() {
         <Title level={4} style={{ margin: 0 }}>职位管理</Title>
         <Button type="primary" icon={<PlusOutlined />} onClick={() => navigate('/jobs/new/edit')}>发布新职位</Button>
       </div>
-      <Table dataSource={jobs} rowKey="id" pagination={false}
+      <Table dataSource={jobs} rowKey="id" pagination={{ pageSize: 10, showSizeChanger: false }}
         columns={[
           { title: '职位', dataIndex: 'title', key: 'title' },
           { title: '状态', dataIndex: 'status', key: 'status', render: (s: string) => {

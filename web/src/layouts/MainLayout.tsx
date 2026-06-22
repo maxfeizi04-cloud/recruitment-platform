@@ -1,6 +1,6 @@
 import { Button, Typography, Avatar } from 'antd';
 import {
-  LogoutOutlined, UserOutlined,
+  LogoutOutlined, UserOutlined, BankOutlined,
 } from '@ant-design/icons';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../stores/auth';
@@ -21,6 +21,7 @@ const hrMenuItems: MenuItem[] = [
   { key: '/jobs/manage', label: '职位管理', icon: <UserOutlined /> },
   { key: '/candidates', label: '候选人管理', icon: <UserOutlined /> },
   { key: '/interviews', label: '面试管理', icon: <UserOutlined /> },
+  { key: '/app/company', label: '企业信息', icon: <BankOutlined /> },
 ];
 
 export default function MainLayout() {

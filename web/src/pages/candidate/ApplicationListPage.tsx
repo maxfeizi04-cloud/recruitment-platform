@@ -19,7 +19,7 @@ export default function ApplicationListPage() {
   return (
     <div>
       <Title level={4}>投递记录</Title>
-      <Table dataSource={apps} rowKey="id" pagination={false}
+      <Table dataSource={apps} rowKey="id" pagination={{ pageSize: 10, showSizeChanger: false }}
         columns={[
           { title: '职位', dataIndex: 'job_title', key: 'job' },
           { title: '状态', dataIndex: 'status', key: 'status', render: (s: string) => {

@@ -21,6 +21,7 @@ import HRDashboardPage from './pages/hr/DashboardPage';
 import JobManagePage from './pages/hr/JobManagePage';
 import JobEditPage from './pages/hr/JobEditPage';
 import CandidateListPage from './pages/hr/CandidateListPage';
+import CompanyPage from './pages/hr/CompanyPage';
 
 // Admin pages
 import AdminDashboardPage from './pages/admin/DashboardPage';
@@ -57,6 +58,7 @@ function App() {
               <Route path="applications" element={<ApplicationListPage />} />
               <Route path="candidates" element={<CandidateListPage />} />
               <Route path="interviews" element={<InterviewListPage />} />
+              <Route path="company" element={<CompanyPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

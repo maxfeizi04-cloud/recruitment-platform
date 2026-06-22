@@ -30,6 +30,21 @@ export default function JobEditPage() {
     }
   }, [id]);
 
+  // Auto-fill location from localStorage company info when creating a new job
+  useEffect(() => {
+    if (!isEdit) {
+      const saved = localStorage.getItem('hr_company');
+      if (saved) {
+        const c = JSON.parse(saved);
+        form.setFieldsValue({
+          province: c.province,
+          city: c.city,
+          district: c.district,
+        });
+      }
+    }
+  }, [isEdit]);
+
   const handleSubmit = async (values: any) => {
     setLoading(true);
     const jobData = {

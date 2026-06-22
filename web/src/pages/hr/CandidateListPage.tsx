@@ -51,7 +51,7 @@ export default function CandidateListPage() {
   return (
     <div>
       <Title level={4}>候选人管理</Title>
-      <Table dataSource={apps} rowKey="id" pagination={false}
+      <Table dataSource={apps} rowKey="id" pagination={{ pageSize: 10, showSizeChanger: false }}
         columns={[
           { title: '候选人', dataIndex: 'user_name', key: 'name' },
           { title: '职位', dataIndex: 'job_title', key: 'job' },
