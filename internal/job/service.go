@@ -4,10 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log/slog"
 
 	"github.com/google/uuid"
 
 	"github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/cache"
+	"github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/search"
 )
 
 var (
@@ -16,12 +18,13 @@ var (
 )
 
 type Service struct {
-	repo  *Repository
-	cache *cache.Client
+	repo     *Repository
+	cache    *cache.Client
+	esClient *search.Client
 }
 
-func NewService(repo *Repository, cache *cache.Client) *Service {
-	return &Service{repo: repo, cache: cache}
+func NewService(repo *Repository, cache *cache.Client, esClient *search.Client) *Service {
+	return &Service{repo: repo, cache: cache, esClient: esClient}
 }
 
 func (s *Service) List(ctx context.Context, limit, offset int) ([]Job, int, error) {
@@ -52,6 +55,26 @@ func (s *Service) List(ctx context.Context, limit, offset int) ([]Job, int, erro
 func (s *Service) Search(ctx context.Context, query, city string, limit, offset int) ([]Job, int, error) {
 	if limit <= 0 || limit > 50 { limit = 20 }
 	if offset < 0 { offset = 0 }
+
+	// 优先使用 ES 搜索
+	if s.esClient != nil && query != "" {
+		results, total, err := s.esClient.SearchJobs(ctx, query, city, limit, offset)
+		if err == nil && len(results) > 0 {
+			var jobs []Job
+			for _, r := range results {
+				id, _ := uuid.Parse(r.ID)
+				job, err := s.repo.GetByID(ctx, id)
+				if err == nil {
+					jobs = append(jobs, *job)
+				}
+			}
+			if len(jobs) > 0 {
+				return jobs, total, nil
+			}
+		}
+		slog.Warn("ES search fallback to PostgreSQL", "query", query, "error", err)
+	}
+
 	return s.repo.Search(ctx, SearchParams{Query: query, City: city, Limit: limit, Offset: offset})
 }
 

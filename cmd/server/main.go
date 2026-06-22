@@ -41,6 +41,7 @@ import (
 	"github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/cos"
 	"github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/maps"
 	redisclient "github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/redis"
+	"github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/search"
 	"github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/sms"
 
 	"github.com/gin-gonic/gin"
@@ -132,8 +133,19 @@ func main() {
 
 		// ── 初始化 Job 模块 ──
 		cacheClient := cache.New(redisClient.Client)
+
+		// ── 初始化 ES 客户端（可选）──
+		var esClient *search.Client
+		if cfg.ES.Addr != "" {
+			esClient, err = search.NewClient([]string{cfg.ES.Addr}, cfg.ES.Index)
+			if err != nil {
+				middleware.Logger.Warn("ES not available, using PostgreSQL search", "error", err)
+			} else {
+				middleware.Logger.Info("Elasticsearch connected", "addr", cfg.ES.Addr, "index", cfg.ES.Index)
+			}
+		}
 	jobRepo := job.NewRepository(dbPool)
-	jobSvc := job.NewService(jobRepo, cacheClient)
+	jobSvc := job.NewService(jobRepo, cacheClient, esClient)
 	jobHandler := job.NewHandler(jobSvc)
 
 	// ── 初始化 Application 模块 ──

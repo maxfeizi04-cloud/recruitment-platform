@@ -16,6 +16,7 @@ type Config struct {
 	COS      COSConfig      `mapstructure:"cos"`
 	IM       IMConfig       `mapstructure:"im"`
 	Maps     MapsConfig     `mapstructure:"maps"`
+	ES       ESConfig       `mapstructure:"elasticsearch"`
 }
 
 type ServerConfig struct {
@@ -76,6 +77,11 @@ type IMConfig struct {
 
 type MapsConfig struct {
 	APIKey string `mapstructure:"api_key"`
+}
+
+type ESConfig struct {
+	Addr  string `mapstructure:"addr"`
+	Index string `mapstructure:"index"`
 }
 
 func Load(configPath string) (*Config, error) {

@@ -31,6 +31,26 @@ services:
       timeout: 3s
       retries: 5
 
+  # ── Elasticsearch 8 (可选) ──
+  elasticsearch:
+    image: elasticsearch:8.15.0
+    container_name: recruit-search
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200/_cluster/health | grep -q 'green\|yellow'"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    profiles:
+      - full
+
   # ── Go Backend ──
   backend:
     build:
@@ -63,6 +83,8 @@ services:
       COS_SECRET_ID: ""
       COS_SECRET_KEY: ""
       COS_BUCKET_URL: ""
+      ES_ADDR: http://elasticsearch:9200
+      ES_INDEX: jobs
     restart: unless-stopped
 
   # ── Database Migration ──
@@ -94,3 +116,4 @@ services:
 
 volumes:
   pgdata:
+  esdata:

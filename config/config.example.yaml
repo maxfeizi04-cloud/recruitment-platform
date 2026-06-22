@@ -38,3 +38,7 @@ im:
 
 maps:
   api_key: ""
+
+elasticsearch:
+  addr: http://localhost:9200
+  index: jobs
