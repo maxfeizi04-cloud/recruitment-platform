@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -38,25 +37,33 @@ func main() {
 
 	cfg, err := config.Load(configPath)
 	if err != nil {
-		log.Fatalf("Failed to load config: %v", err)
+		middleware.Logger.Error("failed to load config", "error", err)
+		os.Exit(1)
 	}
 
 	gin.SetMode(cfg.Server.Mode)
 
+	// Set log level based on Gin mode
+	if cfg.Server.Mode == "debug" {
+		middleware.SetLogLevel("debug")
+	}
+
 	ctx := context.Background()
 	dbPool, err := pgxpool.New(ctx, cfg.Database.DSN())
 	if err != nil {
-		log.Fatalf("Failed to connect to database: %v", err)
+		middleware.Logger.Error("failed to connect to database", "error", err)
+		os.Exit(1)
 	}
 	defer dbPool.Close()
-	log.Println("Database connected")
+	middleware.Logger.Info("database connected")
 
 	redisClient, err := redisclient.NewClient(cfg.Redis)
 	if err != nil {
-		log.Fatalf("Failed to connect to Redis: %v", err)
+		middleware.Logger.Error("failed to connect to Redis", "error", err)
+		os.Exit(1)
 	}
 	defer redisClient.Close()
-	log.Println("Redis connected")
+	middleware.Logger.Info("redis connected")
 
 	jwtManager := pkgauth.NewJWTManager(cfg.JWT)
 
@@ -64,12 +71,13 @@ func main() {
 	if cfg.SMS.SecretID != "" {
 		smsSender, err = sms.NewTencentSMS(cfg.SMS)
 		if err != nil {
-			log.Fatalf("Failed to init SMS client: %v", err)
+			middleware.Logger.Error("failed to init SMS client", "error", err)
+			os.Exit(1)
 		}
-		log.Println("SMS client initialized (Tencent Cloud)")
+		middleware.Logger.Info("SMS client initialized (Tencent Cloud)")
 	} else {
 		smsSender = &sms.MockSender{}
-		log.Println("SMS client: using mock (no SMS config provided)")
+		middleware.Logger.Info("SMS client: using mock (no SMS config provided)")
 	}
 
 	msgBroker := broker.NewInMemoryBroker()
@@ -84,11 +92,12 @@ func main() {
 	if cfg.COS.SecretID != "" {
 		cosUploader, err = cos.NewTencentCOS(cfg.COS)
 		if err != nil {
-			log.Fatalf("Failed to init COS client: %v", err)
+			middleware.Logger.Error("failed to init COS client", "error", err)
+			os.Exit(1)
 		}
-		log.Println("COS client initialized")
+		middleware.Logger.Info("COS client initialized")
 	} else {
-		log.Println("COS client: not configured (attachment upload will fail)")
+		middleware.Logger.Info("COS client: not configured (attachment upload will fail)")
 	}
 
 	// ── 初始化 User 模块 ──
@@ -128,7 +137,8 @@ func main() {
 
 	router := gin.New()
 
-	router.Use(middleware.Logger())
+	router.Use(middleware.Tracing())
+	router.Use(middleware.RequestLogger())
 	router.Use(middleware.CORS())
 	router.Use(middleware.CharsetUTF8())
 	router.Use(gin.Recovery())
@@ -154,7 +164,7 @@ func main() {
 		appHandler.RegisterRoutes(api, protected)
 		chatHandler.RegisterRoutes(protected)
 		interviewHandler.RegisterRoutes(api, protected)
-			recommendHandler.RegisterRoutes(protected)
+		recommendHandler.RegisterRoutes(protected)
 	}
 
 	srv := &http.Server{
@@ -163,23 +173,25 @@ func main() {
 	}
 
 	go func() {
-		log.Printf("Server starting on :%s", cfg.Server.Port)
+		middleware.Logger.Info("server starting", "port", cfg.Server.Port)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("Server error: %v", err)
+			middleware.Logger.Error("server error", "error", err)
+			os.Exit(1)
 		}
 	}()
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
-	log.Println("Shutting down server...")
+	middleware.Logger.Info("shutting down server...")
 
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	if err := srv.Shutdown(shutdownCtx); err != nil {
-		log.Fatalf("Server forced to shutdown: %v", err)
+		middleware.Logger.Error("server forced to shutdown", "error", err)
+		os.Exit(1)
 	}
 
-	log.Println("Server exited")
+	middleware.Logger.Info("server exited")
 }
