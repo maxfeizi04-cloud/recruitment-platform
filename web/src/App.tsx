@@ -15,6 +15,7 @@ import ApplicationListPage from './pages/candidate/ApplicationListPage';
 import InterviewListPage from './pages/candidate/InterviewListPage';
 
 // HR pages
+import HRDashboardPage from './pages/hr/DashboardPage';
 import JobManagePage from './pages/hr/JobManagePage';
 import JobEditPage from './pages/hr/JobEditPage';
 import CandidateListPage from './pages/hr/CandidateListPage';
@@ -26,6 +27,8 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 }
 
 function HomePage() {
+  const auth = useAuth();
+  if (auth.isHR) return <HRDashboardPage />;
   return <CandidateHomePage />;
 }
 
