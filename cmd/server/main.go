@@ -41,6 +41,7 @@ import (
 	"github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/cos"
 	"github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/maps"
 	redisclient "github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/redis"
+	"github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/ws"
 	"github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/search"
 	"github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/sms"
 
@@ -185,6 +186,11 @@ func main() {
 
 	// Swagger 文档
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	// WebSocket
+	ws.JWTSecret = []byte(cfg.JWT.Secret)
+	go ws.DefaultHub.Run()
+	router.GET("/ws", ws.HandleWebSocket)
 
 	// 注册业务路由
 	api := router.Group("/api")

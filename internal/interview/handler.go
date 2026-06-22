@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+
 	"github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/maps"
 
 	"github.com/gin-gonic/gin"
@@ -125,6 +126,7 @@ func (h *Handler) UpdateStatus(c *gin.Context) {
 func (h *Handler) Navigate(c *gin.Context) {
 	inv, err := h.svc.GetByID(c.Request.Context(), c.Param("id"))
 	if err != nil {
+
 		c.JSON(http.StatusNotFound, gin.H{"error": "邀约不存在"})
 		return
 	}
