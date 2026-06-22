@@ -13,6 +13,7 @@ import JobDetailPage from './pages/candidate/JobDetailPage';
 import ResumeListPage from './pages/candidate/ResumeListPage';
 import ApplicationListPage from './pages/candidate/ApplicationListPage';
 import InterviewListPage from './pages/candidate/InterviewListPage';
+import ProfilePage from './pages/candidate/ProfilePage';
 
 // HR pages
 import HRDashboardPage from './pages/hr/DashboardPage';
@@ -50,6 +51,7 @@ function App() {
               <Route path="jobs/manage" element={<JobManagePage />} />
               <Route path="jobs/:id/edit" element={<JobEditPage />} />
               <Route path="resumes" element={<ResumeListPage />} />
+              <Route path="profile" element={<ProfilePage />} />
               <Route path="applications" element={<ApplicationListPage />} />
               <Route path="candidates" element={<CandidateListPage />} />
               <Route path="interviews" element={<InterviewListPage />} />
