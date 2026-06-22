@@ -111,16 +111,18 @@ export default function DashboardPage() {
   return (
     <Layout className="min-h-screen">
       {/* ===== Sider ===== */}
-      <Sider width={280} className="!bg-[#111c24] min-h-screen">
-        <div className="flex items-center gap-2 px-5 py-5">
+      <Sider width={280} className="!bg-white border-r border-slate-100 min-h-screen">
+        <div className="flex items-center gap-3 px-5 py-5">
           <div className="w-10 h-10 rounded-lg bg-[#1677FF] flex items-center justify-center">
             <span className="text-white font-bold text-lg">放</span>
           </div>
-          <span className="text-lg font-bold text-white tracking-tight">放心</span>
+          <div className="leading-tight">
+            <span className="text-lg font-bold text-slate-800 tracking-tight">放心</span>
+            <p className="text-[10px] text-slate-400 leading-none mt-0.5">让求职招聘更放心</p>
+          </div>
         </div>
         <Menu
           mode="inline"
-          theme="dark"
           selectedKeys={[selectedMenu]}
           onClick={({ key }) => {
             setSelectedMenu(key);
@@ -129,8 +131,8 @@ export default function DashboardPage() {
             if (key === 'interviews') navigate('/app/interviews');
           }}
           items={menuItems}
-          className="bg-transparent border-0 px-2 [&_.ant-menu-item-selected]:!bg-[#1677FF] [&_.ant-menu-item]:!rounded-lg [&_.ant-menu-item]:!my-0.5"
-          style={{ background: 'transparent', color: '#94a3b8' }}
+          className="border-0 px-2 [&_.ant-menu-item-selected]:!bg-blue-50 [&_.ant-menu-item-selected]:!text-[#1677FF] [&_.ant-menu-item]:!rounded-lg [&_.ant-menu-item]:!my-0.5"
+          style={{ background: 'transparent' }}
         />
       </Sider>
 

@@ -133,27 +133,28 @@ export default function AdminDashboardPage() {
   return (
     <Layout className="min-h-screen">
       {/* ===== Sider ===== */}
-      <Sider width={260} className="!bg-[#111c24] min-h-screen">
+      <Sider width={260} className="!bg-white border-r border-slate-100 min-h-screen">
         {/* Logo */}
         <div className="px-5 py-5">
           <div className="flex items-center gap-2.5 mb-2">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-emerald-400 flex items-center justify-center">
               <CheckCircleOutlined className="text-white text-lg" />
             </div>
-            <span className="text-xl font-bold text-white tracking-tight">放心</span>
+            <div className="leading-tight">
+              <span className="text-lg font-bold text-slate-800 tracking-tight">放心</span>
+              <p className="text-[10px] text-slate-400 leading-none mt-0.5">系统管理平台</p>
+            </div>
           </div>
-          <p className="text-[10px] text-slate-500 tracking-wider pl-0.5">系统管理平台</p>
         </div>
 
         {/* Menu */}
         <Menu
           mode="inline"
-          theme="dark"
           selectedKeys={[selectedMenu]}
           onClick={({ key }) => setSelectedMenu(key)}
           items={menuItems}
-          className="bg-transparent border-0 px-2 [&_.ant-menu-item-selected]:!bg-[#1677FF] [&_.ant-menu-item]:!rounded-lg [&_.ant-menu-item]:!my-0.5"
-          style={{ background: 'transparent', color: '#94a3b8' }}
+          className="border-0 px-2 [&_.ant-menu-item-selected]:!bg-blue-50 [&_.ant-menu-item-selected]:!text-[#1677FF] [&_.ant-menu-item]:!rounded-lg [&_.ant-menu-item]:!my-0.5"
+          style={{ background: 'transparent' }}
         />
       </Sider>
 
