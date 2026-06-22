@@ -1,4 +1,4 @@
-module recruitment-platform
+module github.com/maxfeizi04-cloud/recruitment-platform
 
 go 1.26.1
 

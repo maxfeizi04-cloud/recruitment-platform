@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	pkgauth "recruitment-platform/internal/pkg/auth"
+	pkgauth "github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/auth"
 
 	"github.com/gin-gonic/gin"
 )

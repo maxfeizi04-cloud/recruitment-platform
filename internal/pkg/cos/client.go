@@ -8,7 +8,7 @@ import (
 	"net/url"
 	"path/filepath"
 
-	"recruitment-platform/internal/config"
+	"github.com/maxfeizi04-cloud/recruitment-platform/internal/config"
 
 	cosapi "github.com/tencentyun/cos-go-sdk-v5"
 	"github.com/google/uuid"

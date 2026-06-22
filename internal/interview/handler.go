@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"recruitment-platform/internal/pkg/maps"
+	"github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/maps"
 
 	"github.com/gin-gonic/gin"
 )

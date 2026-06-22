@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"recruitment-platform/internal/pkg/broker"
+	"github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/broker"
 )
 
 func TestInMemoryBroker_PublishSubscribe(t *testing.T) {

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"recruitment-platform/internal/config"
+	"github.com/maxfeizi04-cloud/recruitment-platform/internal/config"
 
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/profile"

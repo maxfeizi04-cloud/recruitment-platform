@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"recruitment-platform/internal/config"
+	"github.com/maxfeizi04-cloud/recruitment-platform/internal/config"
 
 	"github.com/redis/go-redis/v9"
 )

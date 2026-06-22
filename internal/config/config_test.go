@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"recruitment-platform/internal/config"
+	"github.com/maxfeizi04-cloud/recruitment-platform/internal/config"
 )
 
 func TestLoad_ValidConfig(t *testing.T) {

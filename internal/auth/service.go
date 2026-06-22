@@ -6,10 +6,10 @@ import (
 	"math/rand"
 	"time"
 
-	pkgauth "recruitment-platform/internal/pkg/auth"
-	"recruitment-platform/internal/pkg/broker"
-	redisclient "recruitment-platform/internal/pkg/redis"
-	"recruitment-platform/internal/pkg/sms"
+	pkgauth "github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/auth"
+	"github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/broker"
+	redisclient "github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/redis"
+	"github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/sms"
 )
 
 type Service struct {

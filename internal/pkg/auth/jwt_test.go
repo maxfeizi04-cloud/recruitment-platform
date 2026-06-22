@@ -3,8 +3,8 @@ package auth_test
 import (
 	"testing"
 
-	"recruitment-platform/internal/config"
-	pkgauth "recruitment-platform/internal/pkg/auth"
+	"github.com/maxfeizi04-cloud/recruitment-platform/internal/config"
+	pkgauth "github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/auth"
 
 	"github.com/google/uuid"
 )

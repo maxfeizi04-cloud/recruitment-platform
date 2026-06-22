@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"mime/multipart"
 
-	"recruitment-platform/internal/pkg/cos"
+	"github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/cos"
 
 	"github.com/google/uuid"
 )

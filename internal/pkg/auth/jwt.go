@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"recruitment-platform/internal/config"
+	"github.com/maxfeizi04-cloud/recruitment-platform/internal/config"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
