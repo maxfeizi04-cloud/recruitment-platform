@@ -131,7 +131,7 @@ export default function DashboardPage() {
             if (key === 'interviews') navigate('/app/interviews');
           }}
           items={menuItems}
-          className="border-0 px-2 [&_.ant-menu-item-selected]:!bg-blue-50 [&_.ant-menu-item-selected]:!text-[#1677FF] [&_.ant-menu-item]:!rounded-lg [&_.ant-menu-item]:!my-0.5"
+          className="border-0 px-2 [&_.ant-menu-item]:!text-slate-600 [&_.ant-menu-item-selected]:!bg-blue-50 [&_.ant-menu-item-selected]:!text-[#1677FF] [&_.ant-menu-item]:!rounded-lg [&_.ant-menu-item]:!my-0.5 [&_.ant-menu-item]:!font-medium"
           style={{ background: 'transparent' }}
         />
       </Sider>
