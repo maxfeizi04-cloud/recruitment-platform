@@ -15,6 +15,7 @@ type Config struct {
 	SMS      SMSConfig      `mapstructure:"sms"`
 	COS      COSConfig      `mapstructure:"cos"`
 	IM       IMConfig       `mapstructure:"im"`
+	Maps     MapsConfig     `mapstructure:"maps"`
 }
 
 type ServerConfig struct {
@@ -71,6 +72,10 @@ type COSConfig struct {
 type IMConfig struct {
 	AppID  string `mapstructure:"app_id"`
 	Secret string `mapstructure:"secret"`
+}
+
+type MapsConfig struct {
+	APIKey string `mapstructure:"api_key"`
 }
 
 func Load(configPath string) (*Config, error) {

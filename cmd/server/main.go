@@ -13,6 +13,7 @@ import (
 	"recruitment-platform/internal/auth"
 	"recruitment-platform/internal/chat"
 	"recruitment-platform/internal/config"
+	"recruitment-platform/internal/interview"
 	"recruitment-platform/internal/job"
 	"recruitment-platform/internal/middleware"
 	"recruitment-platform/internal/resume"
@@ -20,6 +21,7 @@ import (
 	pkgauth "recruitment-platform/internal/pkg/auth"
 	"recruitment-platform/internal/pkg/broker"
 	"recruitment-platform/internal/pkg/cos"
+	"recruitment-platform/internal/pkg/maps"
 	redisclient "recruitment-platform/internal/pkg/redis"
 	"recruitment-platform/internal/pkg/sms"
 
@@ -111,6 +113,14 @@ func main() {
 	// ── 初始化 Chat/IM 模块 ──
 	chatHandler := chat.NewHandler(cfg.IM.AppID, cfg.IM.Secret)
 
+	// ── 初始化 Maps 客户端 ──
+	mapsClient := maps.NewClient(cfg.Maps.APIKey)
+
+	// ── 初始化 Interview 模块 ──
+	interviewRepo := interview.NewRepository(dbPool)
+	interviewSvc := interview.NewService(interviewRepo, dbPool)
+	interviewHandler := interview.NewHandler(interviewSvc, mapsClient)
+
 	router := gin.New()
 
 	router.Use(middleware.Logger())
@@ -136,7 +146,8 @@ func main() {
 		resumeHandler.RegisterRoutes(protected)
 		jobHandler.RegisterRoutes(api, protected)
 		appHandler.RegisterRoutes(api, protected)
-			chatHandler.RegisterRoutes(protected)
+		chatHandler.RegisterRoutes(protected)
+		interviewHandler.RegisterRoutes(api, protected)
 	}
 
 	srv := &http.Server{
