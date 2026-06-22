@@ -1,31 +1,19 @@
 import { useState } from 'react';
-import { Layout, Menu, Dropdown, Badge, Table, DatePicker, Button, Avatar } from 'antd';
+import { Dropdown, Badge, Table, DatePicker, Button, Avatar } from 'antd';
 import {
-  HomeOutlined, FileTextOutlined, IdcardOutlined, SearchOutlined,
-  CalendarOutlined, TrophyOutlined, BankOutlined, BarChartOutlined,
-  SettingOutlined, CaretDownOutlined, MailOutlined, QuestionCircleOutlined,
+  CaretDownOutlined, MailOutlined, QuestionCircleOutlined,
   LockOutlined, UserOutlined, PlusCircleOutlined, TeamOutlined,
   SendOutlined, RocketOutlined, RightOutlined, WarningFilled,
   AlertFilled, CaretUpOutlined, RiseOutlined,
+  IdcardOutlined, FileTextOutlined, CalendarOutlined, TrophyOutlined,
+  SearchOutlined,
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import LightSidebar, { hrMenu } from '../../components/LightSidebar';
 
-const { Header, Sider, Content } = Layout;
 const { RangePicker } = DatePicker;
 
 // ── Mock Data ──
-
-const menuItems = [
-  { key: 'home', icon: <HomeOutlined />, label: '首页' },
-  { key: 'jobs', icon: <IdcardOutlined />, label: '职位管理' },
-  { key: 'resumes', icon: <FileTextOutlined />, label: '简历管理' },
-  { key: 'talents', icon: <SearchOutlined />, label: '人才推荐' },
-  { key: 'interviews', icon: <CalendarOutlined />, label: '面试管理' },
-  { key: 'offers', icon: <TrophyOutlined />, label: 'Offer管理' },
-  { key: 'company', icon: <BankOutlined />, label: '企业信息' },
-  { key: 'stats', icon: <BarChartOutlined />, label: '数据统计' },
-  { key: 'settings', icon: <SettingOutlined />, label: '账号设置' },
-];
 
 const statCards = [
   { title: '在招职位', count: 32, change: '+4', icon: <IdcardOutlined />, bg: 'bg-blue-50 text-blue-500' },
@@ -109,36 +97,21 @@ export default function DashboardPage() {
   const navigate = useNavigate();
 
   return (
-    <Layout className="min-h-screen">
-      {/* ===== Sider ===== */}
-      <Sider width={280} className="!bg-white border-r border-slate-100 min-h-screen">
-        <div className="flex items-center gap-3 px-5 py-5">
-          <div className="w-10 h-10 rounded-lg bg-[#1677FF] flex items-center justify-center">
-            <span className="text-white font-bold text-lg">放</span>
-          </div>
-          <div className="leading-tight">
-            <span className="text-lg font-bold text-slate-800 tracking-tight">放心</span>
-            <p className="text-[10px] text-slate-400 leading-none mt-0.5">让求职招聘更放心</p>
-          </div>
-        </div>
-        <Menu
-          mode="inline"
-          selectedKeys={[selectedMenu]}
-          onClick={({ key }) => {
-            setSelectedMenu(key);
-            if (key === 'jobs') navigate('/app/jobs/manage');
-            if (key === 'resumes') navigate('/app/candidates');
-            if (key === 'interviews') navigate('/app/interviews');
-          }}
-          items={menuItems}
-          className="border-0 px-2 [&_.ant-menu-item]:!text-slate-600 [&_.ant-menu-item-selected]:!bg-blue-50 [&_.ant-menu-item-selected]:!text-[#1677FF] [&_.ant-menu-item]:!rounded-lg [&_.ant-menu-item]:!my-0.5 [&_.ant-menu-item]:!font-medium"
-          style={{ background: 'transparent' }}
-        />
-      </Sider>
+    <div className="flex h-screen bg-white">
+      <LightSidebar
+        items={hrMenu}
+        activeKey={selectedMenu}
+        onSelect={(key) => {
+          setSelectedMenu(key);
+          if (key === 'jobs') navigate('/app/jobs/manage');
+          if (key === 'resumes') navigate('/app/candidates');
+          if (key === 'interviews') navigate('/app/interviews');
+        }}
+      />
 
-      <Layout>
+      <div className="flex-1 flex flex-col overflow-auto">
         {/* ===== Header ===== */}
-        <Header className="bg-white border-b border-slate-100 flex items-center justify-between px-6 h-18">
+        <header className="bg-white border-b border-slate-100 flex items-center justify-between px-6 h-18">
           {/* Left */}
           <Dropdown menu={{ items: [
             { key: '1', label: '放心科技有限公司' },
@@ -169,10 +142,10 @@ export default function DashboardPage() {
               </div>
             </Dropdown>
           </div>
-        </Header>
+        </header>
 
         {/* ===== Content ===== */}
-        <Content className="bg-white p-10">
+        <main className="flex-1 p-10">
           <div className="flex flex-col gap-6">
             {/* ── 模块一：数据概览 ── */}
             <div>
@@ -280,8 +253,8 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
-        </Content>
-      </Layout>
-    </Layout>
+        </main>
+      </div>
+    </div>
   );
 }

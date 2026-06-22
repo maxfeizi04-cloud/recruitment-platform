@@ -1,31 +1,16 @@
 import { useState } from 'react';
-import { Layout, Menu, Avatar, Progress, Timeline, Tag, Dropdown, Button } from 'antd';
+import { Avatar, Progress, Timeline, Tag, Dropdown, Button } from 'antd';
 import {
-  LeftOutlined, EditOutlined, EnvironmentOutlined, DollarOutlined,
+  EditOutlined, EnvironmentOutlined, DollarOutlined,
   PhoneOutlined, MailOutlined, CalendarOutlined, HomeOutlined,
   BookOutlined, DownloadOutlined, EyeOutlined, MoreOutlined,
   TrophyOutlined, ProjectOutlined, FilePdfOutlined,
-  UserOutlined, IdcardOutlined, FileTextOutlined, SendOutlined,
-  StarOutlined, HeartOutlined, ToolOutlined, ExperimentOutlined,
-  SettingOutlined, ManOutlined,
+  UserOutlined, StarOutlined,
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-
-const { Header, Sider, Content } = Layout;
+import LightSidebar, { candidateMenu } from '../../components/LightSidebar';
 
 // ── Mock Data ──
-
-const menuItems = [
-  { key: 'back', icon: <LeftOutlined />, label: '返回', type: 'back' as const },
-  { key: 'center', icon: <UserOutlined />, label: '个人中心', type: 'section' as const },
-  { key: 'resume', icon: <IdcardOutlined />, label: '我的简历', type: 'item' as const },
-  { key: 'applications', icon: <SendOutlined />, label: '投递记录', type: 'item' as const },
-  { key: 'favorites', icon: <StarOutlined />, label: '我的收藏', type: 'item' as const },
-  { key: 'follows', icon: <HeartOutlined />, label: '我的关注', type: 'item' as const },
-  { key: 'services', icon: <ToolOutlined />, label: '求职服务', type: 'item' as const },
-  { key: 'assessment', icon: <ExperimentOutlined />, label: '职业测评', type: 'item' as const },
-  { key: 'settings', icon: <SettingOutlined />, label: '账号设置', type: 'item' as const },
-];
 
 const traitTags = ['沟通能力强', '逻辑思维清晰', '团队协作', '用户体验', '数据分析'];
 
@@ -101,48 +86,29 @@ export default function ProfilePage() {
   const navigate = useNavigate();
 
   return (
-    <Layout className="min-h-screen bg-white">
-      {/* ===== Header ===== */}
-      <Header className="bg-white border-b border-slate-100 flex items-center justify-between px-6 h-16 sticky top-0 z-50">
-        <div className="flex items-center gap-8">
-          <a href="/" className="flex items-center gap-2 flex-shrink-0">
-            <div className="w-8 h-8 rounded-lg bg-[#1677FF] flex items-center justify-center">
-              <span className="text-white font-bold text-base">放</span>
-            </div>
-            <span className="text-lg font-bold text-slate-800 tracking-tight">放心</span>
-          </a>
-          <nav className="hidden md:flex items-center gap-6 text-sm">
-            <span className="text-[#1677FF] font-medium cursor-pointer">首页</span>
-            <span className="text-slate-500 hover:text-[#1677FF] cursor-pointer transition-colors">找工作</span>
-            <span className="text-slate-500 hover:text-[#1677FF] cursor-pointer transition-colors">企业</span>
-          </nav>
-        </div>
-      </Header>
+    <div className="flex h-screen bg-white">
+      <LightSidebar
+        items={candidateMenu}
+        activeKey={selectedMenu}
+        onSelect={(key) => setSelectedMenu(key)}
+        showBack={true}
+        onBack={() => navigate('/')}
+      />
 
-      <Layout>
-        {/* ===== Sider ===== */}
-        <Sider width={240} className="bg-white border-r border-slate-100 pt-4">
-          <button
-            onClick={() => navigate('/')}
-            className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-[#1677FF] transition-colors px-4 mb-4 w-full text-left"
-          >
-            <LeftOutlined className="text-xs" /> 返回
-          </button>
-          <div className="px-4 mb-3">
-            <span className="text-xs text-slate-400 font-medium tracking-wider">个人中心</span>
+      <div className="flex-1 flex flex-col overflow-auto">
+        {/* ===== Header ===== */}
+        <header className="bg-white border-b border-slate-100 flex items-center justify-between px-6 h-16 sticky top-0 z-50">
+          <div className="flex items-center gap-8">
+            <nav className="hidden md:flex items-center gap-6 text-sm">
+              <span className="text-[#1677FF] font-medium cursor-pointer">首页</span>
+              <span className="text-slate-500 hover:text-[#1677FF] cursor-pointer transition-colors">找工作</span>
+              <span className="text-slate-500 hover:text-[#1677FF] cursor-pointer transition-colors">企业</span>
+            </nav>
           </div>
-          <Menu
-            mode="inline"
-            selectedKeys={[selectedMenu]}
-            onClick={({ key }) => setSelectedMenu(key)}
-            items={menuItems.filter((m) => m.type !== 'back' && m.type !== 'section')}
-            className="border-0 px-2"
-            style={{ background: 'transparent' }}
-          />
-        </Sider>
+        </header>
 
         {/* ===== Content ===== */}
-        <Content className="bg-white p-8">
+        <main className="flex-1 p-8">
           <div className="grid grid-cols-12 gap-6">
             {/* ── Left: Main Resume Column (8 cols) ── */}
             <div className="col-span-12 lg:col-span-8 flex flex-col gap-6">
@@ -344,8 +310,8 @@ export default function ProfilePage() {
               </div>
             </div>
           </div>
-        </Content>
-      </Layout>
-    </Layout>
+        </main>
+      </div>
+    </div>
   );
 }

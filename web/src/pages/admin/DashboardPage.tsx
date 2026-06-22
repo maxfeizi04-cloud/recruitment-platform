@@ -1,34 +1,18 @@
 import { useState } from 'react';
-import { Layout, Menu, Badge, Avatar, DatePicker } from 'antd';
+import { Badge, Avatar, DatePicker } from 'antd';
 import {
-  HomeOutlined, UserOutlined, BankOutlined, IdcardOutlined,
-  FileTextOutlined, AuditOutlined, BarChartOutlined, SettingOutlined,
-  FileSearchOutlined, SafetyCertificateOutlined, BellOutlined,
+  BellOutlined, UserOutlined,
   FullscreenOutlined, QuestionCircleOutlined, CaretDownOutlined,
-  TeamOutlined, ApartmentOutlined, CheckCircleOutlined,
+  TeamOutlined, BankOutlined, IdcardOutlined, FileTextOutlined,
   AlertOutlined, BlockOutlined, RiseOutlined, ArrowUpOutlined,
-  AppstoreOutlined, SearchOutlined, FormOutlined, DatabaseOutlined,
+  AppstoreOutlined, CheckCircleOutlined, FormOutlined, DatabaseOutlined,
   RightOutlined,
 } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import LightSidebar, { adminMenu } from '../../components/LightSidebar';
 
-const { Header, Sider, Content } = Layout;
 const { RangePicker } = DatePicker;
 
 // ── Mock Data ──
-
-const menuItems = [
-  { key: 'home', icon: <HomeOutlined />, label: '首页' },
-  { key: 'users', icon: <UserOutlined />, label: '用户管理' },
-  { key: 'companies', icon: <BankOutlined />, label: '企业管理' },
-  { key: 'jobs', icon: <IdcardOutlined />, label: '职位管理' },
-  { key: 'content', icon: <FileTextOutlined />, label: '内容管理' },
-  { key: 'audit', icon: <AuditOutlined />, label: '审核管理' },
-  { key: 'stats', icon: <BarChartOutlined />, label: '数据统计' },
-  { key: 'config', icon: <SettingOutlined />, label: '系统配置' },
-  { key: 'logs', icon: <FileSearchOutlined />, label: '日志管理' },
-  { key: 'permissions', icon: <SafetyCertificateOutlined />, label: '权限管理' },
-];
 
 const statCards = [
   { title: '注册用户', count: '156,823', change: '+1,256', icon: <TeamOutlined />, bg: 'bg-blue-50 text-blue-500' },
@@ -131,36 +115,17 @@ export default function AdminDashboardPage() {
   const [selectedMenu, setSelectedMenu] = useState('home');
 
   return (
-    <Layout className="min-h-screen">
-      {/* ===== Sider ===== */}
-      <Sider width={260} className="!bg-white border-r border-slate-100 min-h-screen">
-        {/* Logo */}
-        <div className="px-5 py-5">
-          <div className="flex items-center gap-2.5 mb-2">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-emerald-400 flex items-center justify-center">
-              <CheckCircleOutlined className="text-white text-lg" />
-            </div>
-            <div className="leading-tight">
-              <span className="text-lg font-bold text-slate-800 tracking-tight">放心</span>
-              <p className="text-[10px] text-slate-400 leading-none mt-0.5">系统管理平台</p>
-            </div>
-          </div>
-        </div>
+    <div className="flex h-screen bg-white">
+      <LightSidebar
+        items={adminMenu}
+        activeKey={selectedMenu}
+        onSelect={(key) => setSelectedMenu(key)}
+        tagline="系统管理平台"
+      />
 
-        {/* Menu */}
-        <Menu
-          mode="inline"
-          selectedKeys={[selectedMenu]}
-          onClick={({ key }) => setSelectedMenu(key)}
-          items={menuItems}
-          className="border-0 px-2 [&_.ant-menu-item]:!text-slate-600 [&_.ant-menu-item-selected]:!bg-blue-50 [&_.ant-menu-item-selected]:!text-[#1677FF] [&_.ant-menu-item]:!rounded-lg [&_.ant-menu-item]:!my-0.5 [&_.ant-menu-item]:!font-medium"
-          style={{ background: 'transparent' }}
-        />
-      </Sider>
-
-      <Layout>
+      <div className="flex-1 flex flex-col overflow-auto">
         {/* ===== Header ===== */}
-        <Header className="bg-white border-b border-slate-100 flex items-center justify-between px-6 h-16">
+        <header className="bg-white border-b border-slate-100 flex items-center justify-between px-6 h-16">
           <h2 className="text-base font-bold text-slate-700 tracking-wide">管理控制台</h2>
 
           <div className="flex items-center gap-5">
@@ -179,10 +144,10 @@ export default function AdminDashboardPage() {
               <CaretDownOutlined className="text-[10px] text-slate-400" />
             </div>
           </div>
-        </Header>
+        </header>
 
         {/* ===== Content ===== */}
-        <Content className="bg-white p-8">
+        <main className="flex-1 p-8">
           <div className="flex flex-col gap-6">
             {/* ── 模块一：平台数据概览 ── */}
             <div>
@@ -288,8 +253,8 @@ export default function AdminDashboardPage() {
               </div>
             </div>
           </div>
-        </Content>
-      </Layout>
-    </Layout>
+        </main>
+      </div>
+    </div>
   );
 }

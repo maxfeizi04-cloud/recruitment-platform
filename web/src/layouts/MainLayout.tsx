@@ -1,27 +1,26 @@
-import React from 'react';
-import { Layout, Menu, Button, Typography, Avatar } from 'antd';
+import { Button, Typography, Avatar } from 'antd';
 import {
-  SearchOutlined, FileTextOutlined, SendOutlined, CalendarOutlined,
-  PlusCircleOutlined, TeamOutlined, LogoutOutlined, UserOutlined,
+  LogoutOutlined, UserOutlined,
 } from '@ant-design/icons';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../stores/auth';
+import LightSidebar from '../components/LightSidebar';
+import type { MenuItem } from '../components/LightSidebar';
 
-const { Header, Sider, Content } = Layout;
 const { Text } = Typography;
 
-const candidateMenu = [
-  { key: '/jobs', icon: <SearchOutlined />, label: '职位搜索' },
-  { key: '/resumes', icon: <FileTextOutlined />, label: '我的简历' },
-  { key: '/applications', icon: <SendOutlined />, label: '投递记录' },
-  { key: '/interviews', icon: <CalendarOutlined />, label: '面试邀约' },
+const candidateMenuItems: MenuItem[] = [
+  { key: '/jobs', label: '职位搜索', icon: <UserOutlined /> },
+  { key: '/resumes', label: '我的简历', icon: <UserOutlined /> },
+  { key: '/applications', label: '投递记录', icon: <UserOutlined /> },
+  { key: '/interviews', label: '面试邀约', icon: <UserOutlined /> },
 ];
 
-const hrMenu = [
-  { key: '/jobs', icon: <SearchOutlined />, label: '职位搜索' },
-  { key: '/jobs/manage', icon: <PlusCircleOutlined />, label: '职位管理' },
-  { key: '/candidates', icon: <TeamOutlined />, label: '候选人管理' },
-  { key: '/interviews', icon: <CalendarOutlined />, label: '面试管理' },
+const hrMenuItems: MenuItem[] = [
+  { key: '/jobs', label: '职位搜索', icon: <UserOutlined /> },
+  { key: '/jobs/manage', label: '职位管理', icon: <UserOutlined /> },
+  { key: '/candidates', label: '候选人管理', icon: <UserOutlined /> },
+  { key: '/interviews', label: '面试管理', icon: <UserOutlined /> },
 ];
 
 export default function MainLayout() {
@@ -29,7 +28,7 @@ export default function MainLayout() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const menuItems = auth.isHR ? hrMenu : candidateMenu;
+  const menuItems = auth.isHR ? hrMenuItems : candidateMenuItems;
 
   const handleLogout = () => {
     auth.logout();
@@ -37,28 +36,23 @@ export default function MainLayout() {
   };
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Sider breakpoint="lg" collapsedWidth="80">
-        <div style={{ padding: '16px', textAlign: 'center' }}>
-          <Text strong style={{ color: '#fff', fontSize: 16 }}>招聘平台</Text>
-        </div>
-        <Menu
-          theme="dark" mode="inline"
-          selectedKeys={[location.pathname]}
-          items={menuItems}
-          onClick={({ key }) => navigate(key)}
-        />
-      </Sider>
-      <Layout>
-        <Header style={{ background: '#fff', padding: '0 24px', display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+    <div className="flex h-screen bg-white">
+      <LightSidebar
+        items={menuItems}
+        activeKey={location.pathname}
+        onSelect={(key) => navigate(key)}
+      />
+
+      <div className="flex-1 flex flex-col overflow-auto">
+        <header style={{ background: '#fff', padding: '0 24px', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: 64, borderBottom: '1px solid #f1f5f9' }}>
           <Avatar icon={<UserOutlined />} style={{ marginRight: 8 }} />
           <Text style={{ marginRight: 16 }}>{auth.user?.name || auth.user?.phone}</Text>
           <Button type="text" icon={<LogoutOutlined />} onClick={handleLogout}>退出</Button>
-        </Header>
-        <Content style={{ margin: 32, padding: 24, background: '#fff', borderRadius: 8 }}>
+        </header>
+        <main style={{ margin: 32, padding: 24, background: '#fff', borderRadius: 8 }}>
           <Outlet />
-        </Content>
-      </Layout>
-    </Layout>
+        </main>
+      </div>
+    </div>
   );
 }
