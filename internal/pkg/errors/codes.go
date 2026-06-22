@@ -22,6 +22,8 @@ func (e *AppError) WithStatus() int {
 	case e.Code >= 30000 && e.Code < 40000:
 		return http.StatusNotFound
 	case e.Code >= 40000 && e.Code < 50000:
+		return http.StatusNotFound
+	case e.Code >= 70000 && e.Code < 80000:
 		return http.StatusBadRequest
 	case e.Code >= 50000:
 		return http.StatusInternalServerError
