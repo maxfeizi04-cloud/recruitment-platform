@@ -181,7 +181,7 @@ export default function AdminDashboardPage() {
         </Header>
 
         {/* ===== Content ===== */}
-        <Content className="bg-[#f4f7fc] p-8">
+        <Content className="bg-white p-8">
           <div className="flex flex-col gap-6">
             {/* ── 模块一：平台数据概览 ── */}
             <div>

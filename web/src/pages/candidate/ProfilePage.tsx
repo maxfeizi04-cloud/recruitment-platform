@@ -101,7 +101,7 @@ export default function ProfilePage() {
   const navigate = useNavigate();
 
   return (
-    <Layout className="min-h-screen bg-[#f4f7fc]">
+    <Layout className="min-h-screen bg-white">
       {/* ===== Header ===== */}
       <Header className="bg-white border-b border-slate-100 flex items-center justify-between px-6 h-16 sticky top-0 z-50">
         <div className="flex items-center gap-8">
@@ -142,7 +142,7 @@ export default function ProfilePage() {
         </Sider>
 
         {/* ===== Content ===== */}
-        <Content className="bg-[#f4f7fc] p-8">
+        <Content className="bg-white p-8">
           <div className="grid grid-cols-12 gap-6">
             {/* ── Left: Main Resume Column (8 cols) ── */}
             <div className="col-span-12 lg:col-span-8 flex flex-col gap-6">

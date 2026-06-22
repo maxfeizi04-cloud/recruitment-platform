@@ -187,7 +187,7 @@ export default function HomePage() {
         </Sider>
 
         {/* ===== Content ===== */}
-        <Content className="bg-[#f4f7fc] p-10">
+        <Content className="bg-white p-10">
           <div className="flex flex-col gap-6">
             {/* Top Row: Welcome + Stats */}
             <div className="grid grid-cols-12 gap-6">

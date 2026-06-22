@@ -170,7 +170,7 @@ export default function DashboardPage() {
         </Header>
 
         {/* ===== Content ===== */}
-        <Content className="bg-[#f4f7fc] p-10">
+        <Content className="bg-white p-10">
           <div className="flex flex-col gap-6">
             {/* ── 模块一：数据概览 ── */}
             <div>
