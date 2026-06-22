@@ -36,6 +36,8 @@ export async function setDefaultResume(id: string): Promise<void> {
 export async function uploadAttachment(id: string, file: File): Promise<string> {
   const form = new FormData();
   form.append('file', file);
-  const { data } = await client.post(`/resumes/${id}/upload-attachment`, form);
+  const { data } = await client.post(`/resumes/${id}/upload-attachment`, form, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
   return data.url;
 }

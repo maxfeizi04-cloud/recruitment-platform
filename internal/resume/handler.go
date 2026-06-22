@@ -2,6 +2,8 @@ package resume
 
 import (
 	"net/http"
+	"path/filepath"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -98,6 +100,28 @@ func (h *Handler) UploadAttachment(c *gin.Context) {
 	file, err := c.FormFile("file")
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "请选择文件"})
+		return
+	}
+
+	// 验证文件类型
+	allowedExts := map[string]bool{
+		".pdf": true, ".doc": true, ".docx": true,
+		".jpg": true, ".jpeg": true, ".png": true,
+	}
+	ext := strings.ToLower(filepath.Ext(file.Filename))
+	if !allowedExts[ext] {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "不支持的文件格式，仅支持 PDF、DOC、DOCX、JPG、PNG",
+		})
+		return
+	}
+
+	// 验证文件大小 (最大 20MB)
+	const maxSize = 20 * 1024 * 1024
+	if file.Size > maxSize {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "文件大小不能超过 20MB",
+		})
 		return
 	}
 

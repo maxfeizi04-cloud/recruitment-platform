@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Typography, Button, Popconfirm, Modal, Input, message, Tag } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined, StarOutlined, StarFilled } from '@ant-design/icons';
-import { listResumes, createResume, updateResume, deleteResume, setDefaultResume, type Resume } from '../../api/resume';
+import { Card, Typography, Button, Popconfirm, Modal, Input, message, Tag, Upload } from 'antd';
+import { PlusOutlined, EditOutlined, DeleteOutlined, StarOutlined, StarFilled, UploadOutlined, FileOutlined } from '@ant-design/icons';
+import { listResumes, createResume, updateResume, deleteResume, setDefaultResume, uploadAttachment, type Resume } from '../../api/resume';
 
 const { Title, Text } = Typography;
 
@@ -54,6 +54,51 @@ export default function ResumeListPage() {
           <Text strong>{r.title}</Text>
           {r.is_default && <Tag color="gold" style={{ marginLeft: 8 }}>默认</Tag>}
           <div style={{ marginTop: 8 }}><Text type="secondary">更新于 {r.updated_at?.slice(0, 10)}</Text></div>
+
+          {/* Attachments section */}
+          <div style={{ marginTop: 12 }}>
+            <Text type="secondary">附件：</Text>
+            {r.attachment_urls && r.attachment_urls.length > 0 ? (
+              r.attachment_urls.map((url: string, idx: number) => (
+                <Tag key={idx} style={{ marginRight: 8, marginBottom: 4 }}>
+                  <a href={url} target="_blank" rel="noopener noreferrer">
+                    附件{idx + 1}: {url.split('/').pop()?.slice(9) || url}
+                  </a>
+                </Tag>
+              ))
+            ) : (
+              <Text type="secondary" style={{ fontSize: 12 }}>暂无附件</Text>
+            )}
+          </div>
+
+          {/* Upload component */}
+          <Upload
+            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+            showUploadList={false}
+            beforeUpload={async (file) => {
+              if (file.size > 20 * 1024 * 1024) {
+                message.error('文件大小不能超过 20MB');
+                return false;
+              }
+              const allowed = ['application/pdf', 'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'image/jpeg', 'image/png'];
+              if (!allowed.includes(file.type)) {
+                message.error('仅支持 PDF、DOC、DOCX、JPG、PNG 格式');
+                return false;
+              }
+              try {
+                await uploadAttachment(r.id, file);
+                message.success('上传成功');
+                fetch();
+              } catch {
+                // error handled by interceptor
+              }
+              return false;
+            }}
+          >
+            <Button icon={<UploadOutlined />} size="small">上传附件</Button>
+          </Upload>
         </Card>
       ))}
       {resumes.length === 0 && !loading && <Text type="secondary">暂无简历，点击"新建简历"创建</Text>}
