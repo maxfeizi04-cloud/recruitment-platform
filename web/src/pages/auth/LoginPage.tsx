@@ -74,10 +74,10 @@ export default function LoginPage() {
       {/* ===== Header ===== */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between h-18">
+          <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <a href="/" className="flex items-center gap-3 flex-shrink-0">
-              <div className="w-10 h-10 rounded-xl bg-[#1677FF] flex items-center justify-center">
+              <div className="w-11 h-11 rounded-xl bg-[#1677FF] flex items-center justify-center">
                 <span className="text-white font-bold text-xl">放</span>
               </div>
               <div className="leading-tight">
@@ -89,7 +89,7 @@ export default function LoginPage() {
             {/* Nav */}
             <nav className="hidden lg:flex items-center gap-1">
               {navLinks.map((item) => (
-                <a key={item.label} href="#" className={`flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-lg transition-colors ${item.active ? 'text-[#1677FF] bg-blue-50/50' : 'text-[#1f1f1f] hover:text-[#1677FF] hover:bg-slate-50'}`}>
+                <a key={item.label} href="#" className={`flex items-center gap-1 px-4 py-2 text-base font-medium rounded-lg transition-colors ${item.active ? 'text-[#1677FF] bg-blue-50/50' : 'text-[#1f1f1f] hover:text-[#1677FF] hover:bg-slate-50'}`}>
                   {item.label}{item.hasDropdown && <CaretDownOutlined className="text-[10px] mt-px" />}
                 </a>
               ))}
@@ -105,22 +105,22 @@ export default function LoginPage() {
       </header>
 
       {/* ===== Hero Main Content ===== */}
-      <main className="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-20">
+      <main className="max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-32 min-h-[calc(100vh-80px)] flex items-center">
         <div className="grid grid-cols-12 gap-8 items-center">
           {/* Left: Brand (col-span-3) */}
           <div className="col-span-12 lg:col-span-3">
-            <h1 className="text-4xl lg:text-5xl font-extrabold text-[#1f1f1f] leading-tight tracking-tight">
+            <h1 className="text-5xl lg:text-6xl font-extrabold text-[#1f1f1f] leading-tight tracking-tight">
               放心找工作
             </h1>
-            <h2 className="text-4xl lg:text-5xl font-extrabold text-[#1677FF] leading-tight tracking-tight mt-1">
+            <h2 className="text-5xl lg:text-6xl font-extrabold text-[#1677FF] leading-tight tracking-tight mt-1">
               安心好未来
             </h2>
-            <p className="mt-4 text-base text-[#8c8c8c] tracking-wide">真实 · 安全 · 高效 · 可靠</p>
+            <p className="mt-4 text-lg text-[#8c8c8c] tracking-wide">真实 · 安全 · 高效 · 可靠</p>
 
             <div className="mt-10 space-y-6">
               {features.map((f) => (
                 <div key={f.title} className="flex items-start gap-4 group cursor-pointer">
-                  <div className="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0 group-hover:bg-[#1677FF] transition-colors duration-300">
+                  <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0 group-hover:bg-[#1677FF] transition-colors duration-300">
                     <span className="text-lg text-[#1677FF] group-hover:text-white transition-colors duration-300">{f.icon}</span>
                   </div>
                   <div>
@@ -134,7 +134,7 @@ export default function LoginPage() {
 
           {/* Center: 3D Illustration Area (col-span-5) */}
           <div className="hidden lg:block col-span-5">
-            <div className="relative h-[460px] rounded-3xl bg-[radial-gradient(circle_at_40%_40%,#e6f4ff_0%,#f4f7fc_70%)] overflow-hidden">
+            <div className="relative h-[520px] rounded-3xl bg-[radial-gradient(circle_at_40%_40%,#e6f4ff_0%,#f4f7fc_70%)] overflow-hidden">
               {/* City Skyline SVG Silhouette */}
               <div className="absolute bottom-0 left-0 right-0 opacity-20">
                 <svg viewBox="0 0 600 200" className="w-full" preserveAspectRatio="none">
@@ -190,9 +190,9 @@ export default function LoginPage() {
 
           {/* Right: Login Card (col-span-4) */}
           <div className="col-span-12 lg:col-span-4">
-            <div className="bg-white/90 backdrop-blur rounded-3xl shadow-xl shadow-blue-500/5 border border-slate-100 p-8">
+            <div className="bg-white/90 backdrop-blur rounded-3xl shadow-xl shadow-blue-500/5 border border-slate-100 p-10">
               <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold text-[#1f1f1f]">欢迎登录放心</h2>
+                <h2 className="text-3xl font-bold text-[#1f1f1f]">欢迎登录放心</h2>
                 <p className="mt-2 text-sm text-[#8c8c8c]">
                   还没有账号？<a href="#" className="text-[#1677FF] hover:underline font-medium">立即注册</a>
                 </p>
@@ -223,7 +223,7 @@ export default function LoginPage() {
                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300"><PhoneOutlined /></span>
                     <input type="tel" maxLength={11} value={phone} onChange={(e) => setPhone(e.target.value)}
                       placeholder="请输入手机号"
-                      className="w-full pl-11 pr-4 py-3 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1677FF]/20 focus:border-[#1677FF] transition-all duration-200 bg-slate-50/50" />
+                      className="w-full pl-11 pr-4 py-3.5 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1677FF]/20 focus:border-[#1677FF] transition-all duration-200 bg-slate-50/50" />
                   </div>
                 </div>
 
@@ -234,7 +234,7 @@ export default function LoginPage() {
                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300"><LockOutlined /></span>
                     <input type={showPwd ? 'text' : 'password'} maxLength={6} value={code} onChange={(e) => setCode(e.target.value)}
                       placeholder="请输入验证码"
-                      className="w-full pl-11 pr-24 py-3 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1677FF]/20 focus:border-[#1677FF] transition-all duration-200 bg-slate-50/50" />
+                      className="w-full pl-11 pr-24 py-3.5 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1677FF]/20 focus:border-[#1677FF] transition-all duration-200 bg-slate-50/50" />
                     <button type="button" onClick={() => setShowPwd(!showPwd)}
                       className="absolute right-[88px] top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1">
                       {showPwd ? <EyeInvisibleOutlined /> : <EyeOutlined />}
@@ -257,7 +257,7 @@ export default function LoginPage() {
 
                 {/* Submit Button */}
                 <button type="submit" disabled={loading}
-                  className="w-full py-3 bg-[#1677FF] hover:bg-blue-600 active:bg-blue-700 text-white text-base font-semibold rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40">
+                  className="w-full py-3.5 bg-[#1677FF] hover:bg-blue-600 active:bg-blue-700 text-white text-base font-semibold rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40">
                   {loading ? '登录中...' : '登 录'}
                 </button>
               </form>
@@ -287,11 +287,11 @@ export default function LoginPage() {
 
       {/* ===== Ribbon Bar ===== */}
       <section className="bg-gray-50/60 border-y border-gray-100">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-14">
+        <div className="mx-auto px-6 lg:px-8 py-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {ribbonItems.map((item) => (
               <div key={item.title} className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+                <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
                   <span className="text-2xl text-[#1677FF]">{item.icon}</span>
                 </div>
                 <div>
@@ -306,11 +306,11 @@ export default function LoginPage() {
 
       {/* ===== Footer ===== */}
       <footer className="bg-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+        <div className="mx-auto px-6 lg:px-8 py-14">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             {/* Logo */}
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-[#1677FF] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-lg bg-[#1677FF] flex items-center justify-center">
                 <span className="text-white font-bold text-sm">放</span>
               </div>
               <div className="leading-tight">

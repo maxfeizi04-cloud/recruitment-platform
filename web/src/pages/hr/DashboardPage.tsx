@@ -111,7 +111,7 @@ export default function DashboardPage() {
   return (
     <Layout className="min-h-screen">
       {/* ===== Sider ===== */}
-      <Sider width={260} className="!bg-[#111c24] min-h-screen">
+      <Sider width={280} className="!bg-[#111c24] min-h-screen">
         <div className="flex items-center gap-2 px-5 py-5">
           <div className="w-10 h-10 rounded-lg bg-[#1677FF] flex items-center justify-center">
             <span className="text-white font-bold text-lg">放</span>
@@ -136,7 +136,7 @@ export default function DashboardPage() {
 
       <Layout>
         {/* ===== Header ===== */}
-        <Header className="bg-white border-b border-slate-100 flex items-center justify-between px-6 h-16">
+        <Header className="bg-white border-b border-slate-100 flex items-center justify-between px-6 h-18">
           {/* Left */}
           <Dropdown menu={{ items: [
             { key: '1', label: '放心科技有限公司' },
@@ -170,7 +170,7 @@ export default function DashboardPage() {
         </Header>
 
         {/* ===== Content ===== */}
-        <Content className="bg-[#f4f7fc] p-8">
+        <Content className="bg-[#f4f7fc] p-10">
           <div className="flex flex-col gap-6">
             {/* ── 模块一：数据概览 ── */}
             <div>

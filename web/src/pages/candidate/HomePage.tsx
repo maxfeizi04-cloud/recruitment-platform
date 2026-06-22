@@ -96,7 +96,7 @@ export default function HomePage() {
               </div>
               <div className="flex flex-wrap gap-1.5">
                 {job.tags.map((tag) => (
-                  <Tag key={tag} className="text-[10px] px-1.5 py-0 m-0 bg-slate-50 border-0 text-slate-500">{tag}</Tag>
+                  <Tag key={tag} className="text-[11px] px-2 py-0.5 m-0 bg-slate-50 border-0 text-slate-500">{tag}</Tag>
                 ))}
               </div>
             </div>
@@ -132,7 +132,7 @@ export default function HomePage() {
   return (
     <Layout className="min-h-screen">
       {/* ===== Header ===== */}
-      <Header className="bg-white border-b border-slate-100 flex items-center justify-between px-6 h-18 sticky top-0 z-50">
+      <Header className="bg-white border-b border-slate-100 flex items-center justify-between px-6 h-20 sticky top-0 z-50">
         {/* Left */}
         <div className="flex items-center gap-8">
           <a href="/" className="flex items-center gap-2 flex-shrink-0">
@@ -150,7 +150,7 @@ export default function HomePage() {
 
         {/* Right */}
         <div className="flex items-center gap-5">
-          <Input.Search placeholder="搜索职位/公司" prefix={<SearchOutlined className="text-slate-300" />} className="w-72 [&_.ant-input]:bg-slate-50 [&_.ant-input]:border-slate-200 [&_.ant-input]:rounded-lg" size="middle" />
+          <Input.Search placeholder="搜索职位/公司" prefix={<SearchOutlined className="text-slate-300" />} className="w-80 [&_.ant-input]:bg-slate-50 [&_.ant-input]:border-slate-200 [&_.ant-input]:rounded-lg" size="middle" />
           <div className="flex items-center gap-4 text-lg text-slate-400">
             <MessageOutlined className="hover:text-[#1677FF] cursor-pointer transition-colors" />
             <Badge dot offset={[-2, 2]}>
@@ -168,7 +168,7 @@ export default function HomePage() {
 
       <Layout>
         {/* ===== Sider ===== */}
-        <Sider width={240} className="bg-white border-r border-slate-100 pt-4">
+        <Sider width={260} className="bg-white border-r border-slate-100 pt-4">
           <Menu
             mode="inline"
             selectedKeys={[selectedMenu]}
@@ -187,14 +187,14 @@ export default function HomePage() {
         </Sider>
 
         {/* ===== Content ===== */}
-        <Content className="bg-[#f4f7fc] p-8">
+        <Content className="bg-[#f4f7fc] p-10">
           <div className="flex flex-col gap-6">
             {/* Top Row: Welcome + Stats */}
             <div className="grid grid-cols-12 gap-6">
               {/* Welcome Card */}
               <div className="col-span-12 lg:col-span-7 bg-white rounded-xl p-6 flex flex-col justify-between">
                 <div>
-                  <h1 className="text-2xl font-bold text-slate-800">
+                  <h1 className="text-3xl font-bold text-slate-800">
                     下午好，张一一 <span className="inline-block animate-bounce">👋</span>
                   </h1>
                   <p className="text-sm text-slate-400 mt-2">完善简历可以提高求职成功率哦</p>
@@ -218,13 +218,13 @@ export default function HomePage() {
                 {statsCards.map((s) => (
                   <div key={s.title} className="bg-white rounded-xl p-4 relative overflow-hidden flex flex-col justify-between hover:shadow-sm transition-shadow cursor-pointer">
                     <span className="text-xs text-slate-400">{s.title}</span>
-                    <span className="text-4xl font-bold text-slate-800 mt-1">{s.count}</span>
+                    <span className="text-5xl font-bold text-slate-800 mt-1">{s.count}</span>
                     <div className="flex items-center gap-1 mt-1">
                       <CaretUpOutlined className="text-green-500 text-[10px]" />
                       <span className="text-xs text-green-500 font-medium">{s.change}</span>
                       <span className="text-[10px] text-slate-400 ml-0.5">较昨日</span>
                     </div>
-                    <div className={`absolute -right-3 -bottom-3 w-20 h-20 rounded-full flex items-center justify-center opacity-15 ${s.color}`}>
+                    <div className={`absolute -right-3 -bottom-3 w-24 h-24 rounded-full flex items-center justify-center opacity-15 ${s.color}`}>
                       <span className="text-3xl">{s.icon}</span>
                     </div>
                   </div>
@@ -241,7 +241,7 @@ export default function HomePage() {
                     activeKey={activeTab}
                     onChange={setActiveTab}
                     items={tabItems.map((t) => ({ key: t.key, label: t.label }))}
-                    className="[&_.ant-tabs-nav]:mb-0 [&_.ant-tabs-tab]:pb-3"
+                    className="[&_.ant-tabs-nav]:mb-0 [&_.ant-tabs-tab]:pb-3 [&_.ant-tabs-tab]:!text-[15px]"
                   />
                   <Button type="text" icon={<ReloadOutlined />} className="text-slate-400 hover:text-[#1677FF] text-sm">换一批</Button>
                 </div>
