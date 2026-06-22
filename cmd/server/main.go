@@ -12,6 +12,8 @@ import (
 	"recruitment-platform/internal/auth"
 	"recruitment-platform/internal/config"
 	"recruitment-platform/internal/middleware"
+	"recruitment-platform/internal/resume"
+	"recruitment-platform/internal/user"
 	pkgauth "recruitment-platform/internal/pkg/auth"
 	"recruitment-platform/internal/pkg/broker"
 	"recruitment-platform/internal/pkg/cos"
@@ -67,11 +69,31 @@ func main() {
 	msgBroker := broker.NewInMemoryBroker()
 	defer msgBroker.Close()
 
-	_ = cos.NewTencentCOS
-
 	authRepo := auth.NewRepository(dbPool)
 	authSvc := auth.NewService(authRepo, jwtManager, smsSender, redisClient, msgBroker)
 	authHandler := auth.NewHandler(authSvc)
+
+	// ── 初始化 COS Uploader ──
+	var cosUploader cos.Uploader
+	if cfg.COS.SecretID != "" {
+		cosUploader, err = cos.NewTencentCOS(cfg.COS)
+		if err != nil {
+			log.Fatalf("Failed to init COS client: %v", err)
+		}
+		log.Println("COS client initialized")
+	} else {
+		log.Println("COS client: not configured (attachment upload will fail)")
+	}
+
+	// ── 初始化 User 模块 ──
+	userRepo := user.NewRepository(dbPool)
+	userSvc := user.NewService(userRepo)
+	userHandler := user.NewHandler(userSvc)
+
+	// ── 初始化 Resume 模块 ──
+	resumeRepo := resume.NewRepository(dbPool)
+	resumeSvc := resume.NewService(resumeRepo, cosUploader)
+	resumeHandler := resume.NewHandler(resumeSvc)
 
 	router := gin.New()
 
@@ -86,20 +108,16 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})
 
+	// 注册业务路由
 	api := router.Group("/api")
 	authHandler.RegisterRoutes(api)
 
+	// 需要认证的路由
 	protected := api.Group("")
 	protected.Use(middleware.AuthRequired(jwtManager))
 	{
-		protected.GET("/users/me", func(c *gin.Context) {
-			userID, _ := c.Get("user_id")
-			role, _ := c.Get("role")
-			c.JSON(http.StatusOK, gin.H{
-				"user_id": userID,
-				"role":    role,
-			})
-		})
+		userHandler.RegisterRoutes(protected)
+		resumeHandler.RegisterRoutes(protected)
 	}
 
 	srv := &http.Server{
