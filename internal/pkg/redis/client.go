@@ -31,7 +31,7 @@ func NewClient(cfg config.RedisConfig) (*Client, error) {
 
 func (c *Client) SetVerificationCode(ctx context.Context, phone, code string) error {
 	key := fmt.Sprintf("sms:code:%s", phone)
-	return c.Set(ctx, key, code, 5*time.Minute).Err()
+	return c.Set(ctx, key, code, 2*time.Minute).Err()
 }
 
 func (c *Client) GetAndDeleteVerificationCode(ctx context.Context, phone, code string) (bool, error) {
