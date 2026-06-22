@@ -11,6 +11,7 @@ import (
 
 	"recruitment-platform/internal/auth"
 	"recruitment-platform/internal/config"
+	"recruitment-platform/internal/job"
 	"recruitment-platform/internal/middleware"
 	"recruitment-platform/internal/resume"
 	"recruitment-platform/internal/user"
@@ -95,6 +96,11 @@ func main() {
 	resumeSvc := resume.NewService(resumeRepo, cosUploader)
 	resumeHandler := resume.NewHandler(resumeSvc)
 
+	// ── 初始化 Job 模块 ──
+	jobRepo := job.NewRepository(dbPool)
+	jobSvc := job.NewService(jobRepo)
+	jobHandler := job.NewHandler(jobSvc)
+
 	router := gin.New()
 
 	router.Use(middleware.Logger())
@@ -118,6 +124,7 @@ func main() {
 	{
 		userHandler.RegisterRoutes(protected)
 		resumeHandler.RegisterRoutes(protected)
+		jobHandler.RegisterRoutes(api, protected)
 	}
 
 	srv := &http.Server{
