@@ -11,6 +11,7 @@ import (
 
 	"recruitment-platform/internal/application"
 	"recruitment-platform/internal/auth"
+	"recruitment-platform/internal/chat"
 	"recruitment-platform/internal/config"
 	"recruitment-platform/internal/job"
 	"recruitment-platform/internal/middleware"
@@ -107,6 +108,9 @@ func main() {
 	appSvc := application.NewService(appRepo)
 	appHandler := application.NewHandler(appSvc)
 
+	// ── 初始化 Chat/IM 模块 ──
+	chatHandler := chat.NewHandler(cfg.IM.AppID, cfg.IM.Secret)
+
 	router := gin.New()
 
 	router.Use(middleware.Logger())
@@ -132,6 +136,7 @@ func main() {
 		resumeHandler.RegisterRoutes(protected)
 		jobHandler.RegisterRoutes(api, protected)
 		appHandler.RegisterRoutes(api, protected)
+			chatHandler.RegisterRoutes(protected)
 	}
 
 	srv := &http.Server{

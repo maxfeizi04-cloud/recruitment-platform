@@ -14,6 +14,7 @@ type Config struct {
 	JWT      JWTConfig      `mapstructure:"jwt"`
 	SMS      SMSConfig      `mapstructure:"sms"`
 	COS      COSConfig      `mapstructure:"cos"`
+	IM       IMConfig       `mapstructure:"im"`
 }
 
 type ServerConfig struct {
@@ -65,6 +66,11 @@ type COSConfig struct {
 	SecretKey string `mapstructure:"secret_key"`
 	BucketURL string `mapstructure:"bucket_url"`
 	Region    string `mapstructure:"region"`
+}
+
+type IMConfig struct {
+	AppID  string `mapstructure:"app_id"`
+	Secret string `mapstructure:"secret"`
 }
 
 func Load(configPath string) (*Config, error) {
