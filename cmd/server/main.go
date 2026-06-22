@@ -15,6 +15,7 @@ import (
 	"recruitment-platform/internal/config"
 	"recruitment-platform/internal/interview"
 	"recruitment-platform/internal/job"
+	"recruitment-platform/internal/recommend"
 	"recruitment-platform/internal/middleware"
 	"recruitment-platform/internal/resume"
 	"recruitment-platform/internal/user"
@@ -121,6 +122,10 @@ func main() {
 	interviewSvc := interview.NewService(interviewRepo, dbPool)
 	interviewHandler := interview.NewHandler(interviewSvc, mapsClient)
 
+	// ── 初始化 Recommend 模块 ──
+	recommendSvc := recommend.NewService(dbPool)
+	recommendHandler := recommend.NewHandler(recommendSvc)
+
 	router := gin.New()
 
 	router.Use(middleware.Logger())
@@ -148,6 +153,7 @@ func main() {
 		appHandler.RegisterRoutes(api, protected)
 		chatHandler.RegisterRoutes(protected)
 		interviewHandler.RegisterRoutes(api, protected)
+			recommendHandler.RegisterRoutes(protected)
 	}
 
 	srv := &http.Server{
