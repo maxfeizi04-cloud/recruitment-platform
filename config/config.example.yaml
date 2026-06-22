@@ -3,20 +3,20 @@ server:
   mode: debug
 
 database:
-  host: 192.168.198.133
+  host: localhost
   port: 5432
-  user: devuser
-  password: devpass
+  user: postgres
+  password: postgres
   name: recruitment
   sslmode: disable
 
 redis:
-  addr: 192.168.198.133:6379
+  addr: localhost:6379
   password: ""
   db: 0
 
 jwt:
-  secret: change-me
+  secret: change-me-to-a-random-string
   expire_hours: 168
 
 sms:
