@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Progress, Tag, Input, Badge, Button, Tabs } from 'antd';
+import { Progress, Tag, Input, Badge, Button, Tabs, Dropdown } from 'antd';
 import {
   SearchOutlined, BellOutlined, MessageOutlined, UserOutlined,
   SendOutlined, CalendarOutlined, StarOutlined,
@@ -10,6 +10,7 @@ import {
   RightOutlined, CaretUpOutlined,
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../stores/auth';
 import LightSidebar, { candidateMenu } from '../../components/LightSidebar';
 
 // ── Mock Data ──
@@ -57,6 +58,7 @@ const tips = [
 export default function HomePage() {
   const [selectedMenu, setSelectedMenu] = useState('home');
   const [activeTab, setActiveTab] = useState('jobs');
+  const auth = useAuth();
   const navigate = useNavigate();
 
   const tabItems = [
@@ -152,12 +154,17 @@ export default function HomePage() {
                 <BellOutlined className="hover:text-[#1677FF] cursor-pointer transition-colors" />
               </Badge>
             </div>
-            <div className="flex items-center gap-2 cursor-pointer pl-4 border-l border-slate-100">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
-                <UserOutlined className="text-white text-xs" />
+            <Dropdown menu={{ items: [
+              { key: 'profile', label: '个人中心', onClick: () => navigate('/app/profile') },
+              { key: 'logout', label: '退出登录', onClick: () => { auth.logout(); navigate('/login'); } },
+            ] }}>
+              <div className="flex items-center gap-2 cursor-pointer pl-4 border-l border-slate-100">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                  <UserOutlined className="text-white text-xs" />
+                </div>
+                <span className="text-sm text-slate-700 font-medium">你好，张一一</span>
               </div>
-              <span className="text-sm text-slate-700 font-medium">你好，张一一</span>
-            </div>
+            </Dropdown>
           </div>
         </header>
 

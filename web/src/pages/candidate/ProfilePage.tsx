@@ -8,6 +8,7 @@ import {
   UserOutlined, StarOutlined,
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../stores/auth';
 import LightSidebar, { candidateMenu } from '../../components/LightSidebar';
 
 // ── Mock Data ──
@@ -83,6 +84,7 @@ const projects = [
 
 export default function ProfilePage() {
   const [selectedMenu, setSelectedMenu] = useState('resume');
+  const auth = useAuth();
   const navigate = useNavigate();
 
   return (
@@ -105,6 +107,18 @@ export default function ProfilePage() {
               <span className="text-slate-500 hover:text-[#1677FF] cursor-pointer transition-colors">企业</span>
             </nav>
           </div>
+
+          <Dropdown menu={{ items: [
+            { key: 'profile', label: '个人中心', onClick: () => navigate('/app/profile') },
+            { key: 'logout', label: '退出登录', onClick: () => { auth.logout(); navigate('/login'); } },
+          ] }}>
+            <div className="flex items-center gap-2 cursor-pointer">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                <UserOutlined className="text-white text-xs" />
+              </div>
+              <span className="text-sm text-slate-700 font-medium hidden sm:inline">张一一</span>
+            </div>
+          </Dropdown>
         </header>
 
         {/* ===== Content ===== */}

@@ -9,6 +9,7 @@ import {
   SearchOutlined,
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../stores/auth';
 import LightSidebar, { hrMenu } from '../../components/LightSidebar';
 
 const { RangePicker } = DatePicker;
@@ -94,6 +95,7 @@ function ResumeChart() {
 
 export default function DashboardPage() {
   const [selectedMenu, setSelectedMenu] = useState('home');
+  const auth = useAuth();
   const navigate = useNavigate();
 
   return (
@@ -131,7 +133,10 @@ export default function DashboardPage() {
             <QuestionCircleOutlined className="text-lg text-slate-400 hover:text-[#1677FF] cursor-pointer transition-colors" />
             <LockOutlined className="text-lg text-slate-400 hover:text-[#1677FF] cursor-pointer transition-colors" />
 
-            <Dropdown menu={{ items: [{ key: 'profile', label: '个人中心' }, { key: 'logout', label: '退出登录' }] }}>
+            <Dropdown menu={{ items: [
+              { key: 'profile', label: '个人中心', onClick: () => navigate('/app/profile') },
+              { key: 'logout', label: '退出登录', onClick: () => { auth.logout(); navigate('/login'); } },
+            ] }}>
               <div className="flex items-center gap-2 cursor-pointer pl-4 border-l border-slate-100">
                 <Avatar size={32} icon={<UserOutlined />} className="bg-gradient-to-br from-blue-400 to-blue-600" />
                 <div className="hidden sm:block text-left leading-tight">

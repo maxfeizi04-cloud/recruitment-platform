@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Badge, Avatar, DatePicker } from 'antd';
+import { Badge, Avatar, DatePicker, Dropdown } from 'antd';
 import {
   BellOutlined, UserOutlined,
   FullscreenOutlined, QuestionCircleOutlined, CaretDownOutlined,
@@ -8,6 +8,8 @@ import {
   AppstoreOutlined, CheckCircleOutlined, FormOutlined, DatabaseOutlined,
   RightOutlined,
 } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../stores/auth';
 import LightSidebar, { adminMenu } from '../../components/LightSidebar';
 
 const { RangePicker } = DatePicker;
@@ -113,6 +115,8 @@ function PVAreaChart() {
 
 export default function AdminDashboardPage() {
   const [selectedMenu, setSelectedMenu] = useState('home');
+  const auth = useAuth();
+  const navigate = useNavigate();
 
   return (
     <div className="flex h-screen bg-white">
@@ -135,14 +139,19 @@ export default function AdminDashboardPage() {
             <FullscreenOutlined className="text-lg text-slate-400 hover:text-[#1677FF] cursor-pointer transition-colors" />
             <QuestionCircleOutlined className="text-lg text-slate-400 hover:text-[#1677FF] cursor-pointer transition-colors" />
 
-            <div className="flex items-center gap-2 cursor-pointer pl-4 border-l border-slate-100">
-              <Avatar size={32} icon={<UserOutlined />} className="bg-gradient-to-br from-slate-600 to-slate-800" />
-              <div className="hidden sm:block text-left leading-tight">
-                <div className="text-sm font-medium text-slate-700">管理员</div>
-                <div className="text-[11px] text-slate-400">系统管理员</div>
+            <Dropdown menu={{ items: [
+              { key: 'profile', label: '个人中心', onClick: () => navigate('/app/profile') },
+              { key: 'logout', label: '退出登录', onClick: () => { auth.logout(); navigate('/login'); } },
+            ] }}>
+              <div className="flex items-center gap-2 cursor-pointer pl-4 border-l border-slate-100">
+                <Avatar size={32} icon={<UserOutlined />} className="bg-gradient-to-br from-slate-600 to-slate-800" />
+                <div className="hidden sm:block text-left leading-tight">
+                  <div className="text-sm font-medium text-slate-700">管理员</div>
+                  <div className="text-[11px] text-slate-400">系统管理员</div>
+                </div>
+                <CaretDownOutlined className="text-[10px] text-slate-400" />
               </div>
-              <CaretDownOutlined className="text-[10px] text-slate-400" />
-            </div>
+            </Dropdown>
           </div>
         </header>
 
