@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
 import { AuthProvider, useAuth } from './stores/auth';
+import { NotificationProvider } from './stores/notification';
 import MainLayout from './layouts/MainLayout';
 import LoginPage from './pages/auth/LoginPage';
 
@@ -41,6 +42,7 @@ function App() {
   return (
     <ConfigProvider locale={zhCN}>
       <AuthProvider>
+        <NotificationProvider>
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
@@ -58,6 +60,7 @@ function App() {
             </Route>
           </Routes>
         </BrowserRouter>
+        </NotificationProvider>
       </AuthProvider>
     </ConfigProvider>
   );
