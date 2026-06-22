@@ -3,7 +3,7 @@ package errors
 import (
 	"log/slog"
 
-	"recruitment-platform/internal/middleware"
+	"github.com/maxfeizi04-cloud/recruitment-platform/internal/middleware"
 
 	"github.com/gin-gonic/gin"
 )

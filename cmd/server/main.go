@@ -1,3 +1,16 @@
+// @title           放心招聘平台 API
+// @version         2.0
+// @description     放心招聘平台后端接口文档，支持求职者、招聘者、管理员三端
+// @contact.name    API Support
+// @contact.url     https://github.com/maxfeizi04-cloud/recruitment-platform
+// @host            localhost:8080
+// @BasePath        /api
+// @schemes         http
+// @securityDefinitions.apikey BearerAuth
+// @in              header
+// @name            Authorization
+// @description     输入 Bearer {token}
+
 package main
 
 import (
@@ -18,8 +31,13 @@ import (
 	"github.com/maxfeizi04-cloud/recruitment-platform/internal/middleware"
 	"github.com/maxfeizi04-cloud/recruitment-platform/internal/resume"
 	"github.com/maxfeizi04-cloud/recruitment-platform/internal/user"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	_ "github.com/maxfeizi04-cloud/recruitment-platform/docs"
 	pkgauth "github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/auth"
 	"github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/broker"
+	"github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/cache"
 	"github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/cos"
 	"github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/maps"
 	redisclient "github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/redis"
@@ -110,9 +128,12 @@ func main() {
 	resumeSvc := resume.NewService(resumeRepo, cosUploader)
 	resumeHandler := resume.NewHandler(resumeSvc)
 
-	// ── 初始化 Job 模块 ──
+	// ── 初始化缓存 ──
+
+		// ── 初始化 Job 模块 ──
+		cacheClient := cache.New(redisClient.Client)
 	jobRepo := job.NewRepository(dbPool)
-	jobSvc := job.NewService(jobRepo)
+	jobSvc := job.NewService(jobRepo, cacheClient)
 	jobHandler := job.NewHandler(jobSvc)
 
 	// ── 初始化 Application 模块 ──
@@ -149,6 +170,9 @@ func main() {
 	router.GET("/api/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})
+
+	// Swagger 文档
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// 注册业务路由
 	api := router.Group("/api")

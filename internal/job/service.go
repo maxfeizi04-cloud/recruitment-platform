@@ -3,8 +3,11 @@ package job
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/google/uuid"
+
+	"github.com/maxfeizi04-cloud/recruitment-platform/internal/pkg/cache"
 )
 
 var (
@@ -13,86 +16,109 @@ var (
 )
 
 type Service struct {
-	repo *Repository
+	repo  *Repository
+	cache *cache.Client
 }
 
-func NewService(repo *Repository) *Service {
-	return &Service{repo: repo}
+func NewService(repo *Repository, cache *cache.Client) *Service {
+	return &Service{repo: repo, cache: cache}
 }
 
 func (s *Service) List(ctx context.Context, limit, offset int) ([]Job, int, error) {
-	if limit <= 0 || limit > 50 {
-		limit = 20
-	}
-	if offset < 0 {
-		offset = 0
+	if limit <= 0 || limit > 50 { limit = 20 }
+	if offset < 0 { offset = 0 }
+
+	if s.cache != nil {
+		key := fmt.Sprintf("jobs:list:%d:%d", limit, offset)
+		var cached struct {
+			Jobs  []Job `json:"jobs"`
+			Total int   `json:"total"`
+		}
+		if ok, _ := s.cache.Get(ctx, key, &cached); ok && len(cached.Jobs) > 0 {
+			return cached.Jobs, cached.Total, nil
+		}
+		jobs, total, err := s.repo.List(ctx, limit, offset)
+		if err == nil {
+			s.cache.Set(ctx, key, struct {
+				Jobs  []Job `json:"jobs"`
+				Total int   `json:"total"`
+			}{jobs, total}, cache.TTLMedium)
+		}
+		return jobs, total, err
 	}
 	return s.repo.List(ctx, limit, offset)
 }
 
 func (s *Service) Search(ctx context.Context, query, city string, limit, offset int) ([]Job, int, error) {
-	if limit <= 0 || limit > 50 {
-		limit = 20
-	}
-	if offset < 0 {
-		offset = 0
-	}
+	if limit <= 0 || limit > 50 { limit = 20 }
+	if offset < 0 { offset = 0 }
 	return s.repo.Search(ctx, SearchParams{Query: query, City: city, Limit: limit, Offset: offset})
 }
 
 func (s *Service) GetByID(ctx context.Context, idStr string) (*Job, error) {
 	id, err := uuid.Parse(idStr)
-	if err != nil {
-		return nil, err
+	if err != nil { return nil, err }
+
+	if s.cache != nil {
+		key := fmt.Sprintf("jobs:detail:%s", idStr)
+		var cached Job
+		if ok, _ := s.cache.Get(ctx, key, &cached); ok {
+			return &cached, nil
+		}
+		job, err := s.repo.GetByID(ctx, id)
+		if err == nil {
+			s.cache.Set(ctx, key, job, cache.TTLMedium)
+		}
+		return job, err
 	}
 	return s.repo.GetByID(ctx, id)
 }
 
 func (s *Service) Create(ctx context.Context, hrUserIDStr, title, description, requirements, salaryRange, location string) (*Job, error) {
 	hrUserID, err := uuid.Parse(hrUserIDStr)
-	if err != nil {
-		return nil, err
+	if err != nil { return nil, err }
+	if title == "" { return nil, ErrEmptyTitle }
+
+	job, err := s.repo.Create(ctx, hrUserID, title, description, requirements, salaryRange, location)
+	if err == nil && s.cache != nil {
+		s.cache.DeletePattern(ctx, "jobs:list:*")
 	}
-	if title == "" {
-		return nil, ErrEmptyTitle
-	}
-	return s.repo.Create(ctx, hrUserID, title, description, requirements, salaryRange, location)
+	return job, err
 }
 
 func (s *Service) Update(ctx context.Context, idStr, hrUserIDStr, title, description, requirements, salaryRange, location string) error {
 	id, err := uuid.Parse(idStr)
-	if err != nil {
-		return err
-	}
+	if err != nil { return err }
 	hrUserID, err := uuid.Parse(hrUserIDStr)
-	if err != nil {
-		return err
+	if err != nil { return err }
+	if title == "" { return ErrEmptyTitle }
+
+	err = s.repo.Update(ctx, id, hrUserID, title, description, requirements, salaryRange, location)
+	if err == nil && s.cache != nil {
+		s.cache.DeletePattern(ctx, "jobs:list:*")
+		s.cache.Delete(ctx, fmt.Sprintf("jobs:detail:%s", idStr))
 	}
-	if title == "" {
-		return ErrEmptyTitle
-	}
-	return s.repo.Update(ctx, id, hrUserID, title, description, requirements, salaryRange, location)
+	return err
 }
 
 func (s *Service) UpdateStatus(ctx context.Context, idStr, hrUserIDStr, status string) error {
 	id, err := uuid.Parse(idStr)
-	if err != nil {
-		return err
-	}
+	if err != nil { return err }
 	hrUserID, err := uuid.Parse(hrUserIDStr)
-	if err != nil {
-		return err
+	if err != nil { return err }
+	if status != "active" && status != "paused" && status != "closed" { return ErrInvalidStatus }
+
+	err = s.repo.UpdateStatus(ctx, id, hrUserID, status)
+	if err == nil && s.cache != nil {
+		s.cache.DeletePattern(ctx, "jobs:list:*")
+		s.cache.Delete(ctx, fmt.Sprintf("jobs:detail:%s", idStr))
 	}
-	if status != "active" && status != "paused" && status != "closed" {
-		return ErrInvalidStatus
-	}
-	return s.repo.UpdateStatus(ctx, id, hrUserID, status)
+	return err
 }
 
 func (s *Service) ListByHR(ctx context.Context, hrUserIDStr string) ([]Job, error) {
 	hrUserID, err := uuid.Parse(hrUserIDStr)
-	if err != nil {
-		return nil, err
-	}
+	if err != nil { return nil, err }
 	return s.repo.ListByHR(ctx, hrUserID)
 }
+
