@@ -1,0 +1,96 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ── Backend: Go ──
+  backend:
+    name: Go Backend
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_DB: testdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+          cache: true
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Run migrations
+        run: |
+          go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+          migrate -path migrations -database "postgres://testuser:testpass@localhost:5432/testdb?sslmode=disable" up
+
+      - name: Run tests
+        run: go test ./... -v -count=1
+        env:
+          DB_HOST: localhost
+          DB_PORT: "5432"
+          DB_USER: testuser
+          DB_PASSWORD: testpass
+          DB_NAME: testdb
+          DB_SSLMODE: disable
+          REDIS_ADDR: localhost:6379
+          JWT_SECRET: ci-test-secret
+
+      - name: Run vet
+        run: go vet ./...
+
+      - name: Build
+        run: go build ./cmd/server/
+
+  # ── Frontend: React + TypeScript ──
+  frontend:
+    name: React Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install dependencies
+        run: cd web && npm ci
+
+      - name: TypeScript check
+        run: cd web && npx tsc --noEmit
+
+      - name: Build
+        run: cd web && npm run build
