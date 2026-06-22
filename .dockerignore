@@ -1,0 +1,10 @@
+node_modules/
+web/node_modules/
+web/dist/
+.env
+server.exe
+*.exe
+.git/
+.gitignore
+README.md
+docs/

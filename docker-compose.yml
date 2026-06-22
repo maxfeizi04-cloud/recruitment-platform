@@ -1,0 +1,96 @@
+version: "3.8"
+
+services:
+  # ── PostgreSQL 16 ──
+  postgres:
+    image: postgres:16-alpine
+    container_name: recruit-db
+    environment:
+      POSTGRES_USER: devuser
+      POSTGRES_PASSWORD: devpass
+      POSTGRES_DB: recruitment
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U devuser -d recruitment"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ── Redis 7 ──
+  redis:
+    image: redis:7-alpine
+    container_name: recruit-cache
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ── Go Backend ──
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: recruit-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      SERVER_PORT: "8080"
+      SERVER_MODE: release
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_USER: devuser
+      DB_PASSWORD: devpass
+      DB_NAME: recruitment
+      DB_SSLMODE: disable
+      REDIS_ADDR: redis:6379
+      REDIS_PASSWORD: ""
+      REDIS_DB: "0"
+      JWT_SECRET: docker-production-secret-change-in-production
+      JWT_EXPIRE_HOURS: "168"
+      SMS_SECRET_ID: ""
+      SMS_SECRET_KEY: ""
+      COS_SECRET_ID: ""
+      COS_SECRET_KEY: ""
+      COS_BUCKET_URL: ""
+    restart: unless-stopped
+
+  # ── Database Migration ──
+  migrate:
+    image: migrate/migrate:v4.17.0
+    container_name: recruit-migrate
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./migrations:/migrations
+    command:
+      - -path=/migrations
+      - -database=postgres://devuser:devpass@postgres:5432/recruitment?sslmode=disable
+      - up
+    restart: "no"
+
+  # ── Frontend (Nginx + React) ──
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: recruit-web
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  pgdata:
