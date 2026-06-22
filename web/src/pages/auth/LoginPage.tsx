@@ -55,11 +55,14 @@ export default function LoginPage() {
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-18">
-            <a href="/" className="flex items-center gap-2 flex-shrink-0">
+            <a href="/" className="flex items-center gap-3 flex-shrink-0">
               <div className="w-10 h-10 rounded-lg bg-[#1677FF] flex items-center justify-center">
                 <span className="text-white font-bold text-lg">放</span>
               </div>
-              <span className="text-xl font-bold text-slate-800 tracking-tight">放心</span>
+              <div className="leading-tight">
+                <span className="text-lg font-bold text-slate-800 tracking-tight">放心</span>
+                <p className="text-[10px] text-slate-400 leading-none mt-0.5">让求职招聘更放心</p>
+              </div>
             </a>
 
             <nav className="hidden md:flex items-center gap-8">
@@ -82,7 +85,10 @@ export default function LoginPage() {
           {/* Left: Promo */}
           <div className="flex-1 lg:w-[60%] max-w-2xl">
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-slate-900 leading-tight tracking-tight">
-              放心找工作 <span className="text-[#1677FF]">安心好未来</span>
+              放心找工作
+            </h1>
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-[#1677FF] leading-tight tracking-tight mt-1">
+              安心好未来
             </h1>
             <p className="mt-4 text-lg text-slate-500 tracking-wide">真实 · 安全 · 高效 · 可靠</p>
 
@@ -215,18 +221,21 @@ export default function LoginPage() {
       <footer className="bg-white border-t border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-md bg-[#1677FF] flex items-center justify-center">
-                <span className="text-white font-bold text-xs">放</span>
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-md bg-[#1677FF] flex items-center justify-center">
+                <span className="text-white font-bold text-sm">放</span>
               </div>
-              <span className="text-sm font-semibold text-slate-700">放心</span>
+              <div className="leading-tight">
+                <span className="text-sm font-semibold text-slate-700">放心</span>
+                <p className="text-[10px] text-slate-400 leading-none mt-0.5">让求职招聘更放心</p>
+              </div>
             </div>
             <nav className="flex items-center gap-6">
               {['关于我们', '帮助中心', '用户协议', '隐私政策', '联系我们'].map((item) => (
-                <a key={item} href="#" className="text-sm text-slate-400 hover:text-[#1677FF] transition-colors duration-200">{item}</a>
+                <a key={item} href="#" className="text-base text-slate-400 hover:text-[#1677FF] transition-colors duration-200">{item}</a>
               ))}
             </nav>
-            <p className="text-xs text-slate-400">© 2024 放心 All Rights Reserved.</p>
+            <p className="text-sm text-slate-400">© 2024 放心 All Rights Reserved.</p>
           </div>
         </div>
       </footer>
