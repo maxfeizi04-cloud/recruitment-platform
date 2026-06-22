@@ -33,12 +33,17 @@ func (h *Handler) SendCode(c *gin.Context) {
 		return
 	}
 
-	if err := h.svc.SendVerificationCode(c.Request.Context(), req.Phone); err != nil {
+	code, err := h.svc.SendVerificationCode(c.Request.Context(), req.Phone)
+	if err != nil {
 		c.JSON(http.StatusTooManyRequests, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "验证码已发送"})
+	resp := gin.H{"message": "验证码已发送"}
+	if gin.Mode() == gin.DebugMode {
+		resp["code"] = code
+	}
+	c.JSON(http.StatusOK, resp)
 }
 
 type loginReq struct {

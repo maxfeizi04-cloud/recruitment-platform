@@ -36,26 +36,26 @@ func NewService(
 	}
 }
 
-func (s *Service) SendVerificationCode(ctx context.Context, phone string) error {
+func (s *Service) SendVerificationCode(ctx context.Context, phone string) (string, error) {
 	allowed, err := s.redis.CanSendCode(ctx, phone)
 	if err != nil {
-		return fmt.Errorf("rate limit check: %w", err)
+		return "", fmt.Errorf("rate limit check: %w", err)
 	}
 	if !allowed {
-		return fmt.Errorf("verification code sent too recently, please wait 60 seconds")
+		return "", fmt.Errorf("verification code sent too recently, please wait 60 seconds")
 	}
 
 	code := generateCode()
 
 	if err := s.redis.SetVerificationCode(ctx, phone, code); err != nil {
-		return fmt.Errorf("store code: %w", err)
+		return "", fmt.Errorf("store code: %w", err)
 	}
 
 	if err := s.smsSender.SendVerificationCode(ctx, phone, code); err != nil {
-		return fmt.Errorf("send sms: %w", err)
+		return "", fmt.Errorf("send sms: %w", err)
 	}
 
-	return nil
+	return code, nil
 }
 
 func (s *Service) Login(ctx context.Context, phone, code, role string) (*LoginResult, error) {

@@ -130,6 +130,7 @@ func main() {
 
 	router.Use(middleware.Logger())
 	router.Use(middleware.CORS())
+	router.Use(middleware.CharsetUTF8())
 	router.Use(gin.Recovery())
 
 	limiter := middleware.NewSimpleRateLimiter(100)
