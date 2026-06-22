@@ -6,10 +6,32 @@ import { AuthProvider, useAuth } from './stores/auth';
 import MainLayout from './layouts/MainLayout';
 import LoginPage from './pages/auth/LoginPage';
 
+// Candidate pages
+import JobListPage from './pages/candidate/JobListPage';
+import JobDetailPage from './pages/candidate/JobDetailPage';
+import ResumeListPage from './pages/candidate/ResumeListPage';
+import ApplicationListPage from './pages/candidate/ApplicationListPage';
+import InterviewListPage from './pages/candidate/InterviewListPage';
+
+// HR pages
+import JobManagePage from './pages/hr/JobManagePage';
+import JobEditPage from './pages/hr/JobEditPage';
+import CandidateListPage from './pages/hr/CandidateListPage';
+
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const auth = useAuth();
   if (!auth.isAuthenticated) return <Navigate to="/login" replace />;
   return <>{children}</>;
+}
+
+function HomePage() {
+  const auth = useAuth();
+  return (
+    <div style={{ textAlign: 'center', padding: 100 }}>
+      <h2>欢迎使用招聘平台</h2>
+      <p>{auth.isHR ? '从左侧菜单管理职位和候选人' : '从左侧菜单搜索职位并投递简历'}</p>
+    </div>
+  );
 }
 
 function App() {
@@ -20,14 +42,15 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
-              {/* Placeholder routes — Phase 2 will add real pages */}
-              <Route index element={<div style={{textAlign:'center',padding:100}}><h2>欢迎使用招聘平台</h2><p>请从左侧菜单选择功能</p></div>} />
-              <Route path="jobs" element={<div>职位列表（建设中）</div>} />
-              <Route path="jobs/manage" element={<div>职位管理（建设中）</div>} />
-              <Route path="resumes" element={<div>简历管理（建设中）</div>} />
-              <Route path="applications" element={<div>投递记录（建设中）</div>} />
-              <Route path="candidates" element={<div>候选人管理（建设中）</div>} />
-              <Route path="interviews" element={<div>面试管理（建设中）</div>} />
+              <Route index element={<HomePage />} />
+              <Route path="jobs" element={<JobListPage />} />
+              <Route path="jobs/:id" element={<JobDetailPage />} />
+              <Route path="jobs/manage" element={<JobManagePage />} />
+              <Route path="jobs/:id/edit" element={<JobEditPage />} />
+              <Route path="resumes" element={<ResumeListPage />} />
+              <Route path="applications" element={<ApplicationListPage />} />
+              <Route path="candidates" element={<CandidateListPage />} />
+              <Route path="interviews" element={<InterviewListPage />} />
             </Route>
           </Routes>
         </BrowserRouter>
