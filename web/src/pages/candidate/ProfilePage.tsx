@@ -121,7 +121,7 @@ export default function ProfilePage() {
 
       <Layout>
         {/* ===== Sider ===== */}
-        <Sider width={200} className="bg-white border-r border-slate-100 pt-4">
+        <Sider width={240} className="bg-white border-r border-slate-100 pt-4">
           <button
             onClick={() => navigate('/')}
             className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-[#1677FF] transition-colors px-4 mb-4 w-full text-left"
@@ -142,8 +142,8 @@ export default function ProfilePage() {
         </Sider>
 
         {/* ===== Content ===== */}
-        <Content className="bg-[#f4f7fc] p-6">
-          <div className="grid grid-cols-12 gap-6 max-w-[1400px]">
+        <Content className="bg-[#f4f7fc] p-8">
+          <div className="grid grid-cols-12 gap-6">
             {/* ── Left: Main Resume Column (8 cols) ── */}
             <div className="col-span-12 lg:col-span-8 flex flex-col gap-6">
               {/* Card 1: Profile Hero */}

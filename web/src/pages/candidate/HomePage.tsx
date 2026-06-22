@@ -132,11 +132,11 @@ export default function HomePage() {
   return (
     <Layout className="min-h-screen">
       {/* ===== Header ===== */}
-      <Header className="bg-white border-b border-slate-100 flex items-center justify-between px-6 h-16 sticky top-0 z-50">
+      <Header className="bg-white border-b border-slate-100 flex items-center justify-between px-6 h-18 sticky top-0 z-50">
         {/* Left */}
         <div className="flex items-center gap-8">
           <a href="/" className="flex items-center gap-2 flex-shrink-0">
-            <div className="w-8 h-8 rounded-lg bg-[#1677FF] flex items-center justify-center">
+            <div className="w-10 h-10 rounded-lg bg-[#1677FF] flex items-center justify-center">
               <span className="text-white font-bold text-base">放</span>
             </div>
             <span className="text-lg font-bold text-slate-800 tracking-tight">放心</span>
@@ -150,7 +150,7 @@ export default function HomePage() {
 
         {/* Right */}
         <div className="flex items-center gap-5">
-          <Input.Search placeholder="搜索职位/公司" prefix={<SearchOutlined className="text-slate-300" />} className="w-56 [&_.ant-input]:bg-slate-50 [&_.ant-input]:border-slate-200 [&_.ant-input]:rounded-lg" size="middle" />
+          <Input.Search placeholder="搜索职位/公司" prefix={<SearchOutlined className="text-slate-300" />} className="w-72 [&_.ant-input]:bg-slate-50 [&_.ant-input]:border-slate-200 [&_.ant-input]:rounded-lg" size="middle" />
           <div className="flex items-center gap-4 text-lg text-slate-400">
             <MessageOutlined className="hover:text-[#1677FF] cursor-pointer transition-colors" />
             <Badge dot offset={[-2, 2]}>
@@ -168,7 +168,7 @@ export default function HomePage() {
 
       <Layout>
         {/* ===== Sider ===== */}
-        <Sider width={200} className="bg-white border-r border-slate-100 pt-4">
+        <Sider width={240} className="bg-white border-r border-slate-100 pt-4">
           <Menu
             mode="inline"
             selectedKeys={[selectedMenu]}
@@ -187,8 +187,8 @@ export default function HomePage() {
         </Sider>
 
         {/* ===== Content ===== */}
-        <Content className="bg-[#f4f7fc] p-6">
-          <div className="flex flex-col gap-6 max-w-[1400px]">
+        <Content className="bg-[#f4f7fc] p-8">
+          <div className="flex flex-col gap-6">
             {/* Top Row: Welcome + Stats */}
             <div className="grid grid-cols-12 gap-6">
               {/* Welcome Card */}
@@ -218,13 +218,13 @@ export default function HomePage() {
                 {statsCards.map((s) => (
                   <div key={s.title} className="bg-white rounded-xl p-4 relative overflow-hidden flex flex-col justify-between hover:shadow-sm transition-shadow cursor-pointer">
                     <span className="text-xs text-slate-400">{s.title}</span>
-                    <span className="text-3xl font-bold text-slate-800 mt-1">{s.count}</span>
+                    <span className="text-4xl font-bold text-slate-800 mt-1">{s.count}</span>
                     <div className="flex items-center gap-1 mt-1">
                       <CaretUpOutlined className="text-green-500 text-[10px]" />
                       <span className="text-xs text-green-500 font-medium">{s.change}</span>
                       <span className="text-[10px] text-slate-400 ml-0.5">较昨日</span>
                     </div>
-                    <div className={`absolute -right-3 -bottom-3 w-16 h-16 rounded-full flex items-center justify-center opacity-10 ${s.color}`}>
+                    <div className={`absolute -right-3 -bottom-3 w-20 h-20 rounded-full flex items-center justify-center opacity-15 ${s.color}`}>
                       <span className="text-3xl">{s.icon}</span>
                     </div>
                   </div>

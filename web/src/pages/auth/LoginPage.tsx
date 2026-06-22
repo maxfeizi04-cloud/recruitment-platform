@@ -54,9 +54,9 @@ export default function LoginPage() {
       {/* ===== Header ===== */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-18">
             <a href="/" className="flex items-center gap-2 flex-shrink-0">
-              <div className="w-9 h-9 rounded-lg bg-[#1677FF] flex items-center justify-center">
+              <div className="w-10 h-10 rounded-lg bg-[#1677FF] flex items-center justify-center">
                 <span className="text-white font-bold text-lg">放</span>
               </div>
               <span className="text-xl font-bold text-slate-800 tracking-tight">放心</span>
@@ -64,7 +64,7 @@ export default function LoginPage() {
 
             <nav className="hidden md:flex items-center gap-8">
               {['首页', '找工作', '招人才', '企业服务', '关于我们'].map((item) => (
-                <a key={item} href="#" className="text-slate-600 hover:text-[#1677FF] transition-colors duration-200 text-sm font-medium">{item}</a>
+                <a key={item} href="#" className="text-slate-600 hover:text-[#1677FF] transition-colors duration-200 text-base font-medium">{item}</a>
               ))}
             </nav>
 
@@ -77,11 +77,11 @@ export default function LoginPage() {
       </header>
 
       {/* ===== Hero Section ===== */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
           {/* Left: Promo */}
           <div className="flex-1 lg:w-[60%] max-w-2xl">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-tight tracking-tight">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-slate-900 leading-tight tracking-tight">
               放心找工作 <span className="text-[#1677FF]">安心好未来</span>
             </h1>
             <p className="mt-4 text-lg text-slate-500 tracking-wide">真实 · 安全 · 高效 · 可靠</p>
@@ -189,7 +189,7 @@ export default function LoginPage() {
 
       {/* ===== Features Bar ===== */}
       <section className="bg-white border-t border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               { icon: <GlobalOutlined />, title: '海量优质企业', desc: '5000+ 认证企业在线招聘' },
@@ -198,7 +198,7 @@ export default function LoginPage() {
               { icon: <SafetyCertificateOutlined />, title: '全程安心服务', desc: '从投递到入职全程保障' },
             ].map((item) => (
               <div key={item.title} className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+                <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
                   <span className="text-2xl text-[#1677FF]">{item.icon}</span>
                 </div>
                 <div>
@@ -213,7 +213,7 @@ export default function LoginPage() {
 
       {/* ===== Footer ===== */}
       <footer className="bg-white border-t border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-md bg-[#1677FF] flex items-center justify-center">
@@ -223,7 +223,7 @@ export default function LoginPage() {
             </div>
             <nav className="flex items-center gap-6">
               {['关于我们', '帮助中心', '用户协议', '隐私政策', '联系我们'].map((item) => (
-                <a key={item} href="#" className="text-xs text-slate-400 hover:text-[#1677FF] transition-colors duration-200">{item}</a>
+                <a key={item} href="#" className="text-sm text-slate-400 hover:text-[#1677FF] transition-colors duration-200">{item}</a>
               ))}
             </nav>
             <p className="text-xs text-slate-400">© 2024 放心 All Rights Reserved.</p>

@@ -111,10 +111,10 @@ export default function DashboardPage() {
   return (
     <Layout className="min-h-screen">
       {/* ===== Sider ===== */}
-      <Sider width={240} className="!bg-[#111c24] min-h-screen">
+      <Sider width={260} className="!bg-[#111c24] min-h-screen">
         <div className="flex items-center gap-2 px-5 py-5">
-          <div className="w-8 h-8 rounded-lg bg-[#1677FF] flex items-center justify-center">
-            <span className="text-white font-bold text-base">放</span>
+          <div className="w-10 h-10 rounded-lg bg-[#1677FF] flex items-center justify-center">
+            <span className="text-white font-bold text-lg">放</span>
           </div>
           <span className="text-lg font-bold text-white tracking-tight">放心</span>
         </div>
@@ -170,8 +170,8 @@ export default function DashboardPage() {
         </Header>
 
         {/* ===== Content ===== */}
-        <Content className="bg-[#f4f7fc] p-6">
-          <div className="flex flex-col gap-6 max-w-[1400px]">
+        <Content className="bg-[#f4f7fc] p-8">
+          <div className="flex flex-col gap-6">
             {/* ── 模块一：数据概览 ── */}
             <div>
               <div className="flex items-center justify-between mb-4">
@@ -187,7 +187,7 @@ export default function DashboardPage() {
                         <span className="text-base">{s.icon}</span>
                       </div>
                     </div>
-                    <div className="text-3xl font-bold text-slate-800 mb-1">{s.count}</div>
+                    <div className="text-4xl font-bold text-slate-800 mb-1">{s.count}</div>
                     <div className="flex items-center gap-1">
                       <CaretUpOutlined className="text-green-500 text-[10px]" />
                       <span className="text-xs text-green-500 font-medium">{s.change}</span>

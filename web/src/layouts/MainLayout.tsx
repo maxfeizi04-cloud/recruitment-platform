@@ -38,7 +38,7 @@ export default function MainLayout() {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider breakpoint="lg" collapsedWidth="0">
+      <Sider breakpoint="lg" collapsedWidth="80">
         <div style={{ padding: '16px', textAlign: 'center' }}>
           <Text strong style={{ color: '#fff', fontSize: 16 }}>招聘平台</Text>
         </div>
@@ -55,7 +55,7 @@ export default function MainLayout() {
           <Text style={{ marginRight: 16 }}>{auth.user?.name || auth.user?.phone}</Text>
           <Button type="text" icon={<LogoutOutlined />} onClick={handleLogout}>退出</Button>
         </Header>
-        <Content style={{ margin: 24, padding: 24, background: '#fff', borderRadius: 8 }}>
+        <Content style={{ margin: 32, padding: 24, background: '#fff', borderRadius: 8 }}>
           <Outlet />
         </Content>
       </Layout>
