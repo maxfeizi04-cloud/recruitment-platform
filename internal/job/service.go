@@ -2,6 +2,7 @@ package job
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log/slog"
@@ -14,6 +15,7 @@ import (
 
 var (
 	ErrEmptyTitle    = errors.New("职位标题不能为空")
+	ErrEmptyLocation = errors.New("工作地址不能为空，请填写省/市")
 	ErrInvalidStatus = errors.New("无效的状态值，允许: active, paused, closed")
 )
 
@@ -101,6 +103,7 @@ func (s *Service) Create(ctx context.Context, hrUserIDStr, title, description, r
 	hrUserID, err := uuid.Parse(hrUserIDStr)
 	if err != nil { return nil, err }
 	if title == "" { return nil, ErrEmptyTitle }
+		if !validLocation(location) { return nil, ErrEmptyLocation }
 
 	job, err := s.repo.Create(ctx, hrUserID, title, description, requirements, salaryRange, location)
 	if err == nil && s.cache != nil {
@@ -115,6 +118,7 @@ func (s *Service) Update(ctx context.Context, idStr, hrUserIDStr, title, descrip
 	hrUserID, err := uuid.Parse(hrUserIDStr)
 	if err != nil { return err }
 	if title == "" { return ErrEmptyTitle }
+	if !validLocation(location) { return ErrEmptyLocation }
 
 	err = s.repo.Update(ctx, id, hrUserID, title, description, requirements, salaryRange, location)
 	if err == nil && s.cache != nil {
@@ -145,3 +149,12 @@ func (s *Service) ListByHR(ctx context.Context, hrUserIDStr string) ([]Job, erro
 	return s.repo.ListByHR(ctx, hrUserID)
 }
 
+
+func validLocation(loc string) bool {
+	if loc == "" || loc == "{}" { return false }
+	var m map[string]interface{}
+	if err := json.Unmarshal([]byte(loc), &m); err != nil { return false }
+	p, _ := m["province"].(string)
+	c, _ := m["city"].(string)
+	return p != "" || c != ""
+}

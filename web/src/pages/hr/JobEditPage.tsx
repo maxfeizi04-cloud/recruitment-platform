@@ -58,11 +58,11 @@ export default function JobEditPage() {
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Form.Item name="title" label="职位名称" rules={[{ required: true }]}><Input placeholder="如：高级前端工程师" /></Form.Item>
           <Form.Item name="description" label="职位描述"><Input.TextArea rows={4} /></Form.Item>
-          <Form.Item label="工作地点">
+          <Form.Item label="工作地点（必填）" required>
             <Input.Group compact>
-              <Form.Item name="province" noStyle><Input placeholder="省" style={{ width: '30%' }} /></Form.Item>
-              <Form.Item name="city" noStyle><Input placeholder="市" style={{ width: '35%' }} /></Form.Item>
-              <Form.Item name="district" noStyle><Input placeholder="区" style={{ width: '35%' }} /></Form.Item>
+              <Form.Item name="province" noStyle rules={[{ required: true, message: '请输入省份' }]}><Input placeholder="省" style={{ width: '30%' }} /></Form.Item>
+              <Form.Item name="city" noStyle rules={[{ required: true, message: '请输入城市' }]}><Input placeholder="市" style={{ width: '35%' }} /></Form.Item>
+              <Form.Item name="district" noStyle><Input placeholder="区（可选）" style={{ width: '35%' }} /></Form.Item>
             </Input.Group>
           </Form.Item>
           <Form.Item label="薪资范围（K/月）">
